@@ -1,0 +1,10 @@
+Game made by ZimonIsHim and MK.
+
+ChessPieces made by Ajay Karat | Devil's Work.shop http://devilswork.shop/
+https://devilsworkshop.itch.io/pixel-art-chess-asset-pack
+
+LibGdx - Cross-platform Java game development framework based on OpenGL.
+https://libgdx.com/
+
+ShapeDrawer made by Earlygrey - Simple library for drawing shapes easily in LibGdx.
+https://github.com/earlygrey/shapedrawer
