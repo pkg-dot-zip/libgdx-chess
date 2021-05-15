@@ -22,7 +22,7 @@ public class MainGame extends ApplicationAdapter implements IDrawCallback {
 		this.batch = new SpriteBatch();
 		this.shapeDrawer = new ShapeDrawer(batch, GraphicsHandler.getEmptyTextureRegion());
 			//Game.
-		this.chessBoard = new ChessBoard(this);
+		this.chessBoard = new ChessBoard();
 	}
 
 	@Override
@@ -35,11 +35,11 @@ public class MainGame extends ApplicationAdapter implements IDrawCallback {
 	}
 
 	private void update(){
-
+		this.chessBoard.update();
 	}
 
 	private void draw(){
-		chessBoard.drawBoard();
+		chessBoard.draw(this);
 	}
 	
 	@Override

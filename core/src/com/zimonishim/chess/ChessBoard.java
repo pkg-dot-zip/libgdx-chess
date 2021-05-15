@@ -1,12 +1,16 @@
 package com.zimonishim.chess;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.zimonishim.chess.gameObjects.ChessField;
 import com.zimonishim.chess.gameObjects.chessPieces.*;
 import com.zimonishim.chess.util.GraphicsHandler;
 
 import java.util.ArrayList;
 
-public class ChessBoard {
+import static com.badlogic.gdx.Input.Buttons.LEFT;
+
+public class ChessBoard implements IGameObject {
 
     private IDrawCallback drawCallback;
 
@@ -20,12 +24,12 @@ public class ChessBoard {
     public static final int offsetX = GraphicsHandler.CENTER_X - ((sizeX * fieldsAmountX) / 2);
     public static final int offsetY = GraphicsHandler.CENTER_Y - ((sizeY * fieldsAmountY) / 2);
 
+    private static final int RIGHT_BOUND_X = GraphicsHandler.CENTER_X + ((sizeX * fieldsAmountX) / 2);
+    private static final int RIGHT_BOUND_Y = GraphicsHandler.CENTER_Y + ((sizeY * fieldsAmountY) / 2);
+
     private ArrayList<ChessField> chessFields = new ArrayList<>(64); //Initial capacity should be the max amount of fields.
 
-    public ChessBoard(IDrawCallback drawCallback) {
-        //Value init.
-        this.drawCallback = drawCallback;
-
+    public ChessBoard() {
         //Fill chessFields list.
         fillBoard();
     }
@@ -91,18 +95,6 @@ public class ChessBoard {
         }
     }
 
-    protected void drawBoard(){
-        for (ChessField chessField : this.chessFields){
-            //Draw fields.
-            drawCallback.getShapeDrawer().filledRectangle(chessField, chessField.getColor());
-
-            //Draw chessPieces.
-            if (chessField.getChessPiece() != null){
-                chessField.draw(drawCallback);
-            }
-        }
-    }
-
     protected boolean isCheckMate(Players player){
         return false;
     }
@@ -119,6 +111,83 @@ public class ChessBoard {
         for (ChessField chessField : this.chessFields){
             if (chessField.getChessPiece() != null){
                 chessField.getChessPiece().dispose();
+            }
+        }
+    }
+
+    public static ChessFieldLetter getLetter(int x){
+        switch (x){
+            case 1:
+                return ChessFieldLetter.A;
+            case 2:
+                return ChessFieldLetter.B;
+            case 3:
+                return ChessFieldLetter.C;
+            case 4:
+                return ChessFieldLetter.D;
+            case 5:
+                return ChessFieldLetter.E;
+            case 6:
+                return ChessFieldLetter.F;
+            case 7:
+                return ChessFieldLetter.G;
+            case 8:
+                return ChessFieldLetter.H;
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
+
+    @Override
+    public void update() {
+        if (Gdx.input.isButtonJustPressed(LEFT)) { //Only run code if we press our left-Mouse button.
+
+            //Getting mouse positions.
+            int mouseX = Gdx.input.getX();
+            int mouseY = Gdx.input.getY();
+
+            if (mouseX > offsetX &&
+                mouseX < RIGHT_BOUND_X &&
+                mouseY > offsetY &&
+                mouseY < RIGHT_BOUND_Y
+            ){
+
+                //Calculating what field the user selected.
+                int selectX = (mouseX - offsetX) / sizeX;
+
+                mouseY = GraphicsHandler.HEIGHT - mouseY; //Calculate mouseY from the bottom of the screen.
+                int selectY = (mouseY - offsetY) / sizeY;
+
+
+                ChessField clickedOnField = getChessField(getLetter(selectX), selectY);
+
+                //Delegate action to clicked ChessField.
+                clickedOnField.onClick();
+
+                //Deselect other ChessFields.
+                for (ChessField chessField : this.chessFields){
+                    if (chessField != clickedOnField){
+                        chessField.deselect();
+                    }
+                }
+            }
+        }
+
+        //Update all chessFields in this ArrayList.
+        for (ChessField chessField : this.chessFields) {
+            chessField.update();
+        }
+    }
+
+    @Override
+    public void draw(IDrawCallback drawCallback) {
+        for (ChessField chessField : this.chessFields){
+            //Draw fields.
+            drawCallback.getShapeDrawer().filledRectangle(chessField, chessField.getColor());
+
+            //Draw chessPieces.
+            if (chessField.getChessPiece() != null){
+                chessField.draw(drawCallback);
             }
         }
     }
