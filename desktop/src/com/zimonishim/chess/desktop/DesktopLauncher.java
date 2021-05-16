@@ -2,7 +2,7 @@ package com.zimonishim.chess.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.zimonishim.chess.MainGame;
+import com.zimonishim.chess.GameHandler;
 import com.zimonishim.chess.util.GraphicsHandler;
 
 public class DesktopLauncher {
@@ -16,6 +16,6 @@ public class DesktopLauncher {
 		//Set other configurations.
 		config.title = "Chess";
 
-		new LwjglApplication(new MainGame(), config);
+		new LwjglApplication(new GameHandler(), config);
 	}
 }

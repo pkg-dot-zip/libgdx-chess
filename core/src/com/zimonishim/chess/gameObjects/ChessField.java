@@ -26,6 +26,7 @@ public class ChessField extends Rectangle implements IGameObject {
 
 
     public ChessField(ChessFieldLetter x, int y, float width, float height, Color color) {
+//        super(x.x * width + ChessBoard.offsetX, y * height + ChessBoard.offsetY, width, height);
         super(x.x * width + ChessBoard.offsetX, y * height + ChessBoard.offsetY, width, height);
         this.color = color;
         this.originalColor = color;

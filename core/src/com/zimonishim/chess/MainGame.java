@@ -1,93 +1,92 @@
 package com.zimonishim.chess;
 
-import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zimonishim.chess.util.GraphicsHandler;
 import com.zimonishim.chess.util.SoundHandler;
-import space.earlygrey.shapedrawer.ShapeDrawer;
 
-public class MainGame extends ApplicationAdapter implements IDrawCallback {
+public class MainGame implements Screen {
 
-	//TODO: Use a camera so that all resolutions work. Right now the positions of graphical elements are NOT relative.
-
-	private SpriteBatch batch;
-	private ShapeDrawer shapeDrawer;
-
-	private BitmapFont font;
+	private final GameHandler gameHandler;
+	private OrthographicCamera camera; //TODO: Use Viewports to make resizing work.
+	private Viewport viewport;
 
 	//Game Attributes.
 	private ChessBoard chessBoard;
 
-	@Override
-	public void create () {
+	public MainGame (GameHandler gameHandler) {
+		this.gameHandler = gameHandler;
+
 		//Value init.
 			//LibGdx.
-		this.batch = new SpriteBatch();
-		this.shapeDrawer = new ShapeDrawer(batch, GraphicsHandler.getEmptyTextureRegion());
-
-		this.font = new BitmapFont();
-		this.font.setColor(Color.BLACK);
+		this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		this.camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
+		this.viewport = new FitViewport(camera.viewportWidth, camera.viewportHeight, camera);
 			//Game.
-		this.chessBoard = new ChessBoard(this);
-
-		//TODO: Decide whether we want to utilise this.
-
-		//Global init.
-		GraphicsHandler.initGraphicSettings(); //Graphics.
-		SoundHandler.initSounds();				//Sounds.
-	}
-
-	@Override
-	public void render () {
-		ScreenUtils.clear(Color.WHITE);
-		batch.begin();
-		update();
-		draw();
-		batch.end();
+		this.chessBoard = new ChessBoard(gameHandler);
 	}
 
 	private void update(){
+		this.camera.update();
 		this.chessBoard.update();
 	}
 
 	private void draw(){
-		drawUI(this);
-		chessBoard.draw(this);
+		drawUI(gameHandler);
+		chessBoard.draw(gameHandler);
 	}
 
 	private void drawUI(IDrawCallback drawCallback){
-		drawCallback.getFont().draw(batch, "Turn: " + this.chessBoard.getTurn().name(), 200, 200);
+		drawCallback.getFont().draw(drawCallback.getBatch(), "Turn: " + this.chessBoard.getTurn().name(), 200, 200);
 	}
 
 	@Override
 	public void dispose () {
 		//Dispose Textures.
 		this.chessBoard.dispose();
-		this.batch.dispose();
 
-		//Dispose Text.
-		this.font.dispose();
-
-		//Dispose Sounds.
-		SoundHandler.dispose();
+		//Dispose the entire game.
+		this.gameHandler.dispose();
 	}
 
 	@Override
-	public Batch getBatch() {
-		return this.batch;
+	public void show() {
+
 	}
 
 	@Override
-	public ShapeDrawer getShapeDrawer() {
-		return this.shapeDrawer;
+	public void render(float delta) {
+		ScreenUtils.clear(Color.WHITE);
+		update();
+		this.gameHandler.getBatch().setProjectionMatrix(camera.combined);
+		this.gameHandler.getBatch().begin();
+		draw();
+		this.gameHandler.getBatch().end();
+	}
+
+	//TODO: Make resizing work. Right now the ratio is good, but we can't interact with anything because the mousePos it not right.
+	@Override
+	public void resize(int width, int height) {
+		this.viewport.update(width, height);
 	}
 
 	@Override
-	public BitmapFont getFont() {
-		return this.font;
+	public void pause() {
+
+	}
+
+	@Override
+	public void resume() {
+
+	}
+
+	@Override
+	public void hide() {
+
 	}
 }
