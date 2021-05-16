@@ -8,9 +8,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.zimonishim.chess.util.GraphicsHandler;
+import com.zimonishim.chess.util.SoundHandler;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class MainGame extends ApplicationAdapter implements IDrawCallback {
+
+	//TODO: Use a camera so that all resolutions work. Right now the positions of graphical elements are NOT relative.
 
 	private SpriteBatch batch;
 	private ShapeDrawer shapeDrawer;
@@ -34,6 +37,9 @@ public class MainGame extends ApplicationAdapter implements IDrawCallback {
 
 		//TODO: Decide whether we want to utilise this.
 		Gdx.graphics.setVSync(true);
+
+		//Global init.
+		SoundHandler.initSounds();
 	}
 
 	@Override
@@ -66,6 +72,9 @@ public class MainGame extends ApplicationAdapter implements IDrawCallback {
 
 		//Dispose Text.
 		this.font.dispose();
+
+		//Dispose Sounds.
+		SoundHandler.dispose();
 	}
 
 	@Override

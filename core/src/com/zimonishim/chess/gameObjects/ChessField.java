@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.zimonishim.chess.*;
 import com.zimonishim.chess.gameObjects.chessPieces.ChessPiece;
+import com.zimonishim.chess.util.FilePathHandler;
+import com.zimonishim.chess.util.SoundHandler;
 
 import java.util.Set;
 
@@ -93,31 +95,43 @@ public class ChessField extends Rectangle implements IGameObject {
 
         //Should this be an else-if with the code in SetAllMoves? ->
         //Move the piece.
-        if (this.chessPiece == null){
-
-            //TODO: Refactor into own method for moving, so we can implement sounds and networking functionality more easily.
-            if (this.isPossibleMove){
-                ChessPiece pieceToMove = null;
-
-                for (ChessField chessField : chessBoardCallback.getChessFields()){
-                    if (chessField.isSelected){
-                        pieceToMove = chessField.getChessPiece();
-                        chessField.setChessPiece(null);
-                    }
-                }
-
-                //This means we moved! So let's move it, and then change turns.
-                this.setChessPiece(pieceToMove);
-                chessBoardCallback.switchTurn();
-            }
-        }
+        movePiece(chessBoardCallback);
 
         //Update selection.
         setSelection(chessBoardCallback);
     }
 
+    //TODO: Actually split the movement code properly instead of this.
+    private void movePiece(IChessBoardCallback chessBoardCallback){
+        if (this.chessPiece == null) {
+            if (this.isPossibleMove) {
+                movePieceOnBoard(chessBoardCallback);
+
+                //TODO: Perhaps write networking code call here.
+                SoundHandler.playSound(FilePathHandler.chessPieceMoveSoundPath);
+            }
+        }
+    }
+
+    private void movePieceOnBoard(IChessBoardCallback chessBoardCallback){
+
+        ChessPiece pieceToMove = null;
+
+        for (ChessField chessField : chessBoardCallback.getChessFields()){
+            if (chessField.isSelected){
+                pieceToMove = chessField.getChessPiece();
+                chessField.setChessPiece(null);
+            }
+        }
+
+        //This means we moved! So let's move it, and then change turns.
+        this.setChessPiece(pieceToMove);
+        chessBoardCallback.switchTurn();
+    }
+
     private void setSelection(IChessBoardCallback chessBoardCallback){
         if (isSelected){
+            resetPossibleMoves(chessBoardCallback); //Make sure deselecting a piece removes all yellow fields.
             deselect();
         } else {
             //Deselect all fields.
