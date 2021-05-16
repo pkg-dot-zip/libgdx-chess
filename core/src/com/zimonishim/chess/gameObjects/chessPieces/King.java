@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.zimonishim.chess.IDrawCallback;
 import com.zimonishim.chess.Players;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 import static com.zimonishim.chess.util.FilePathHandler.chessPieceTexturesPath;
@@ -28,8 +30,14 @@ public class King extends ChessPiece {
         return false;
     }
 
+    //TODO: Don't allow moving there if another piece is there. We can use isMoveAllowed for that.
     @Override
-    public Set getPossibleMoves() {
-        return null;
+    public Set<int[]> getPossibleMoves() {
+        return new HashSet<>(Arrays.asList(
+                new int[]{0, 1},
+                new int[]{0, -1},
+                new int[]{1, 0},
+                new int[]{-1, 0}
+        ));
     }
 }

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import static com.badlogic.gdx.Input.Buttons.LEFT;
 
-public class ChessBoard implements IGameObject {
+public class ChessBoard implements IGameObject, IChessBoardCallback {
 
     private IDrawCallback drawCallback;
 
@@ -29,7 +29,9 @@ public class ChessBoard implements IGameObject {
 
     private ArrayList<ChessField> chessFields = new ArrayList<>(64); //Initial capacity should be the max amount of fields.
 
-    public ChessBoard() {
+    public ChessBoard(IDrawCallback drawCallback) {
+        this.drawCallback = drawCallback;
+
         //Fill chessFields list.
         fillBoard();
     }
@@ -99,11 +101,13 @@ public class ChessBoard implements IGameObject {
         return false;
     }
 
-    protected ChessField getChessField(ChessFieldLetter letter, int number){
+    @Override
+    public ChessField getChessField(ChessFieldLetter letter, int number){
         return this.chessFields.get((letter.x + number * fieldsAmountX) - 1); //Quick maths.
     }
 
-    protected ChessPiece getChessPiece(ChessFieldLetter letter, int number){
+    @Override
+    public ChessPiece getChessPiece(ChessFieldLetter letter, int number){
         return getChessField(letter, number).getChessPiece();
     }
 
@@ -161,15 +165,8 @@ public class ChessBoard implements IGameObject {
 
                 ChessField clickedOnField = getChessField(getLetter(selectX), selectY);
 
-                //Delegate action to clicked ChessField.
-                clickedOnField.onClick();
-
-                //Deselect other ChessFields.
-                for (ChessField chessField : this.chessFields){
-                    if (chessField != clickedOnField){
-                        chessField.deselect();
-                    }
-                }
+                //Delegate action to method.
+                clickedOnField.onClick(this, clickedOnField);
             }
         }
 
@@ -178,17 +175,16 @@ public class ChessBoard implements IGameObject {
             chessField.update();
         }
     }
-
     @Override
     public void draw(IDrawCallback drawCallback) {
         for (ChessField chessField : this.chessFields){
-            //Draw fields.
-            drawCallback.getShapeDrawer().filledRectangle(chessField, chessField.getColor());
-
-            //Draw chessPieces.
-            if (chessField.getChessPiece() != null){
-                chessField.draw(drawCallback);
-            }
+            //Draw fields & chessPieces.
+            chessField.draw(drawCallback);
         }
+    }
+
+    @Override
+    public ArrayList<ChessField> getChessFields() {
+        return this.chessFields;
     }
 }

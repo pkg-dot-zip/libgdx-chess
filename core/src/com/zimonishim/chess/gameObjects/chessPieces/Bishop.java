@@ -2,9 +2,12 @@ package com.zimonishim.chess.gameObjects.chessPieces;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.zimonishim.chess.ChessBoard;
 import com.zimonishim.chess.IDrawCallback;
 import com.zimonishim.chess.Players;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 import static com.zimonishim.chess.util.FilePathHandler.chessPieceTexturesPath;
@@ -29,7 +32,16 @@ public class Bishop extends ChessPiece {
     }
 
     @Override
-    public Set getPossibleMoves() {
-        return null;
+    public Set<int[]> getPossibleMoves() {
+        Set<int[]> set = new HashSet<>();
+
+        for (int i = 1; i < ChessBoard.fieldsAmountX; ++i){
+            set.add(new int[]{i, i});
+            set.add(new int[]{-i, -i});
+            set.add(new int[]{-i, i});
+            set.add(new int[]{i, -i});
+        }
+
+        return set;
     }
 }

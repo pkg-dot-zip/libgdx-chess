@@ -10,15 +10,19 @@ public abstract class ChessPiece {
 
     protected IDrawCallback drawCallback;
     protected Texture texture;
+    protected Players player;
 
     public ChessPiece(IDrawCallback drawCallback, Players player) {
         this.drawCallback = drawCallback;
         this.texture = getPlayerTexture(player);
+        this.player = player;
     }
 
     protected abstract Texture getPlayerTexture(Players player);
+
+    //TODO: Disallow jumping over pieces (except for the knights).
     public abstract boolean isMoveAllowed();
-    public abstract Set getPossibleMoves();
+    public abstract Set<int[]> getPossibleMoves();
 
     public Texture getTexture() {
         return this.texture;
@@ -26,5 +30,9 @@ public abstract class ChessPiece {
 
     public void dispose(){
         this.texture.dispose();
+    }
+
+    public Players getPlayer() {
+        return this.player;
     }
 }
