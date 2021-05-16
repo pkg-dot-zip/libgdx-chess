@@ -6,7 +6,6 @@ import com.zimonishim.chess.ChessBoard;
 import com.zimonishim.chess.IDrawCallback;
 import com.zimonishim.chess.Players;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,11 +23,6 @@ public class Bishop extends ChessPiece {
         } else {
             return new Texture(Gdx.files.internal(chessPieceTexturesPath + "/black_bishop.png"));
         }
-    }
-
-    @Override
-    public boolean isMoveAllowed() {
-        return false;
     }
 
     @Override

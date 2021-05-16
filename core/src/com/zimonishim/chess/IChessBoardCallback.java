@@ -7,7 +7,13 @@ import java.util.ArrayList;
 
 public interface IChessBoardCallback {
 
+
     public ChessField getChessField(ChessFieldLetter letter, int number);
     public ChessPiece getChessPiece(ChessFieldLetter letter, int number);
+
+    /**
+     * Returns an ArrayList with chessFields.
+     * @return  arrayList with chessFields
+     */
     public ArrayList<ChessField> getChessFields();
 }

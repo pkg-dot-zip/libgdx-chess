@@ -9,13 +9,16 @@ import java.util.Set;
 
 public class ChessField extends Rectangle implements IGameObject {
 
+    //Colors.
     private Color color;         //The current color on the screen.
     private Color originalColor; //White or Brown.
 
+    //Field's piece's properties.
     private boolean isSelected = false;
     private boolean isPossibleMove = false;
     private ChessPiece chessPiece;
 
+    //Position.
     private ChessFieldLetter posX;
     private int posY;
 
@@ -28,11 +31,6 @@ public class ChessField extends Rectangle implements IGameObject {
         this.posY = y;
     }
 
-    public ChessField(ChessFieldLetter x, int y, float width, float height, Color color, ChessPiece chessPiece){
-        this(x, y, width, height, color);
-        this.chessPiece = chessPiece;
-    }
-
     public ChessPiece getChessPiece() {
         return this.chessPiece;
     }
@@ -41,21 +39,20 @@ public class ChessField extends Rectangle implements IGameObject {
         this.chessPiece = chessPiece;
     }
 
-    public Color getColor() {
-        return this.color;
-    }
-
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
     @Override
     public void update() {
+        //TODO: Once the game is done, and we notice we don't need to call this as often we NEED to optimize this by not doing so.
+        //The reason we can consider this is because we only update variables when pressing the mouse,
+        // so this could be once then and ONLY if then.
+
         color = originalColor;
 
         if (isSelected){
-            color = Color.CYAN;
+            if (this.chessPiece != null){
+                color = Color.CYAN;
+            } else {
+                System.out.println("Selected field with no chessPieces. Should we disallow this?");
+            }
         } else if (isPossibleMove){
             color = Color.YELLOW;
         }
@@ -63,15 +60,20 @@ public class ChessField extends Rectangle implements IGameObject {
 
     @Override
     public void draw(IDrawCallback drawCallback) {
+        //Draw the field ONLY, so without the piece.
         drawCallback.getShapeDrawer().filledRectangle(this, color);
 
+        //Return if there is no piece.
         if (this.chessPiece == null){
             return;
         }
+
+        //Return if there is no texture. //TODO: This can be removed once we've decided we'll stick with these textures.
         if (this.chessPiece.getTexture() == null){
             return;
         }
 
+        //Draw the chessPiece.
         drawCallback.getBatch().draw(
                 this.chessPiece.getTexture(),
                 this.x,
@@ -79,17 +81,54 @@ public class ChessField extends Rectangle implements IGameObject {
         );
     }
 
-    //TODO: Fix deselecting.
+    //TODO: Only allow input on the players turn. This is necessary for implementing attacks.
     //TODO: Whenever there is a chessPiece of the opponent here, check if we can attack that piece.
-    //TODO: Whenever the field is empty see if we can move the selected piece there.
-    //TODO: Only allow input on the players turn.
     public void onClick(IChessBoardCallback chessBoardCallback, ChessField clickedOnField){ //TODO: Isn't clickedOnField always this?! Change this!
         //Reset selection & possible moves.
-        for (ChessField chessField : chessBoardCallback.getChessFields()){
-            chessField.deselect();
-            chessField.setPossibleMove(false);
+        resetPossibleMoves(chessBoardCallback);
+
+        //Set all moves.
+        setAllMoves(chessBoardCallback, clickedOnField);
+
+
+        //Should this be an else-if with the code in SetAllMoves? ->
+        //Move the piece.
+        if (this.chessPiece == null){
+
+            //TODO: Refactor into own method for moving, so we can implement sounds and networking functionality more easily.
+            if (this.isPossibleMove){
+                ChessPiece pieceToMove = null;
+
+                for (ChessField chessField : chessBoardCallback.getChessFields()){
+                    if (chessField.isSelected){
+                        pieceToMove = chessField.getChessPiece();
+                        chessField.setChessPiece(null);
+                    }
+                }
+
+                this.setChessPiece(pieceToMove);
+            }
         }
 
+        //Update selection.
+        setSelection(chessBoardCallback);
+    }
+
+    private void setSelection(IChessBoardCallback chessBoardCallback){
+        if (isSelected){
+            deselect();
+        } else {
+            //Deselect all fields.
+            for (ChessField chessField : chessBoardCallback.getChessFields()){
+                chessField.deselect();
+            }
+
+            //Then select the one we just pressed.
+            select();
+        }
+    }
+
+    private void setAllMoves(IChessBoardCallback chessBoardCallback, ChessField clickedOnField){
         //Set all possible moves.
         if (clickedOnField.getChessPiece() != null){
             ChessPiece chessPiece = clickedOnField.getChessPiece();
@@ -100,7 +139,8 @@ public class ChessField extends Rectangle implements IGameObject {
 
                 if (chessPiece.getPlayer() == Players.WHITE){ //White piece.
 
-                    //TODO: Fix. -> Don't even get a NullPointerException when the returned moves are null.
+                    //If the piece is WHITE, calculate what fields are eligible
+                    // for movement and then set the possibleMove boolean to true.
                     for (int[] ints : set){
                         int x = chessField.getPos()[0] - clickedOnField.getPos()[0];
                         int y = chessField.getPos()[1] - clickedOnField.getPos()[1];
@@ -111,7 +151,9 @@ public class ChessField extends Rectangle implements IGameObject {
                     }
 
                 } else {                                        //Black piece.
-                    //TODO: Fix. -> Don't even get a NullPointerException when the returned moves are null.
+
+                    //If the piece is BLACK, calculate what fields are eligible
+                    // for movement and then set the possibleMove boolean to true.
                     for (int[] ints : set){
                         int x = clickedOnField.getPos()[0] - chessField.getPos()[0];
                         int y = clickedOnField.getPos()[1] - chessField.getPos()[1];
@@ -123,32 +165,46 @@ public class ChessField extends Rectangle implements IGameObject {
                 }
             }
         }
+    }
 
-        if (this.chessPiece == null){
-            //TODO: Make moves etc.
-            return;
-        }
-
-        if (isSelected){
-            deselect();
-        } else {
-            select();
+    /**
+     * Sets all fields from the chessBoardCallback, defined as a parameter, to <b>not</b> possible to move.
+     * @param chessBoardCallback  callback to retrieve list from
+     */
+    private void resetPossibleMoves(IChessBoardCallback chessBoardCallback){
+        for (ChessField chessField : chessBoardCallback.getChessFields()){
+            if (chessField != this){
+                chessField.setPossibleMove(false);
+            }
         }
     }
 
-
+    /**
+     * Sets this.isSelected to true.
+     */
     private void select(){
         this.isSelected = true;
     }
 
+    /**
+     * Sets this.isSelected to false.
+     */
     public void deselect(){
         this.isSelected = false;
     }
 
+    /**
+     * Returns an array with two integers, representing the X- and Y-position of this field.
+     * @return  coordinates of this field
+     */
     private int[] getPos(){
-        return new int[]{posX.x, posY};
+        return new int[]{this.posX.x, this.posY};
     }
 
+    /**
+     * Sets this.isPossibleMove to the parameter's value.
+     * @param possibleMove  boolean representing the possibility to move
+     */
     private void setPossibleMove(boolean possibleMove) {
         this.isPossibleMove = possibleMove;
     }

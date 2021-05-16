@@ -30,11 +30,6 @@ public class Pawn extends ChessPiece {
     }
 
     @Override
-    public boolean isMoveAllowed() {
-        return false;
-    }
-
-    @Override
     public Set<int[]> getPossibleMoves() {
         //TODO: Only allow one square to be moved if this is NOT the first move.
         if (isFirstMove){

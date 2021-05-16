@@ -25,11 +25,6 @@ public class King extends ChessPiece {
         }
     }
 
-    @Override
-    public boolean isMoveAllowed() {
-        return false;
-    }
-
     //TODO: Don't allow moving there if another piece is there. We can use isMoveAllowed for that.
     @Override
     public Set<int[]> getPossibleMoves() {

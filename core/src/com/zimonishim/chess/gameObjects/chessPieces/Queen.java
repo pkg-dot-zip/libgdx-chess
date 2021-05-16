@@ -26,11 +26,6 @@ public class Queen extends ChessPiece {
     }
 
     @Override
-    public boolean isMoveAllowed() {
-        return false;
-    }
-
-    @Override
     public Set<int[]> getPossibleMoves() {
         Set<int[]> set = new HashSet<>();
 

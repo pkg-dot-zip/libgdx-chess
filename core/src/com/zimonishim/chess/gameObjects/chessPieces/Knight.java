@@ -18,16 +18,11 @@ public class Knight extends ChessPiece {
 
     @Override
     protected Texture getPlayerTexture(Players player) {
-        if (player == Players.WHITE){
+        if (player == Players.WHITE) {
             return new Texture(Gdx.files.internal(chessPieceTexturesPath + "/white_knight.png"));
         } else {
             return new Texture(Gdx.files.internal(chessPieceTexturesPath + "/black_knight.png"));
         }
-    }
-
-    @Override
-    public boolean isMoveAllowed() {
-        return false;
     }
 
     @Override

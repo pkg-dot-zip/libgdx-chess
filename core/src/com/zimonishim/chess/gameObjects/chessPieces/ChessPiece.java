@@ -21,7 +21,9 @@ public abstract class ChessPiece {
     protected abstract Texture getPlayerTexture(Players player);
 
     //TODO: Disallow jumping over pieces (except for the knights).
-    public abstract boolean isMoveAllowed();
+    public boolean isMoveAllowed(){
+        return false;
+    }
     public abstract Set<int[]> getPossibleMoves();
 
     public Texture getTexture() {

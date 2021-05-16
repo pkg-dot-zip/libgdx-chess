@@ -18,16 +18,11 @@ public class Rook extends ChessPiece {
 
     @Override
     protected Texture getPlayerTexture(Players player) {
-        if (player == Players.WHITE){
+        if (player == Players.WHITE) {
             return new Texture(Gdx.files.internal(chessPieceTexturesPath + "/white_rook.png"));
         } else {
             return new Texture(Gdx.files.internal(chessPieceTexturesPath + "/black_rook.png"));
         }
-    }
-
-    @Override
-    public boolean isMoveAllowed() {
-        return false;
     }
 
     @Override

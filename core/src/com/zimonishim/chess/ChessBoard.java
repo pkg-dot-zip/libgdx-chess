@@ -43,7 +43,7 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
         //Fill fields.
         for (int y = 0; y < fieldsAmountY; ++y){
 
-            colorBool = !colorBool; //Without this we only draw the Y-axis. So we're doing this the wrong around.
+            colorBool = !colorBool; //Without this we only draw the Y-axis. So we're doing this the wrong around. Right?
 
             for (int x = 0; x < fieldsAmountX; ++x){ //TODO: We're doing this the wrong way around. -> Fix this if so. See comment above.
 
@@ -71,7 +71,7 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
             }
         }
 
-        //Fill pieces. //TODO: Fix positioning! Row should +1 when drawing.
+        //Fill pieces.
             //White.
         fillRowWithSpecialPieces(0, Players.WHITE);
         fillRowWithPawns(1, Players.WHITE);
@@ -97,6 +97,7 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
         }
     }
 
+    //TODO: Check whether a player is checkMate.
     protected boolean isCheckMate(Players player){
         return false;
     }
@@ -119,7 +120,7 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
         }
     }
 
-    public static ChessFieldLetter getLetter(int x){
+    private static ChessFieldLetter getLetter(int x){
         switch (x){
             case 1:
                 return ChessFieldLetter.A;
@@ -138,18 +139,24 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
             case 8:
                 return ChessFieldLetter.H;
             default:
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("This letter is not on the ChessBoard");
+                                                //TODO: Fix this. This is why this happens: ->
+                                                //Whenever you click one imaginary field left to the most-left field
+                                                //on the board, it throws this. This makes sense since we can't select
+                                                //pieces in the most-right column on our board. This means that we made a mistake
+                                                //in our calculations and that we should shift everything to the right somewhere.
         }
     }
 
     @Override
     public void update() {
-        if (Gdx.input.isButtonJustPressed(LEFT)) { //Only run code if we press our left-Mouse button.
+        if (Gdx.input.isButtonJustPressed(LEFT)) { //Only run code ONCE if we press our left-Mouse button.
 
             //Getting mouse positions.
             int mouseX = Gdx.input.getX();
             int mouseY = Gdx.input.getY();
 
+            //Check whether the mouse was pressed on a field.
             if (mouseX > offsetX &&
                 mouseX < RIGHT_BOUND_X &&
                 mouseY > offsetY &&
@@ -165,7 +172,7 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
 
                 ChessField clickedOnField = getChessField(getLetter(selectX), selectY);
 
-                //Delegate action to method.
+                //Delegate action to method in field's class.
                 clickedOnField.onClick(this, clickedOnField);
             }
         }
