@@ -37,4 +37,8 @@ public abstract class ChessPiece {
     public Players getPlayer() {
         return this.player;
     }
+
+    public void onMove(){
+        //Special method that doesn't need to be overridden.
+    }
 }

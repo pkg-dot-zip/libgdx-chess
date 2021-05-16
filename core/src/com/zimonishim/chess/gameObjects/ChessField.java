@@ -126,6 +126,7 @@ public class ChessField extends Rectangle implements IGameObject {
 
         //This means we moved! So let's move it, and then change turns.
         this.setChessPiece(pieceToMove);
+        this.getChessPiece().onMove();
         chessBoardCallback.switchTurn();
     }
 

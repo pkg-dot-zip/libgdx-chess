@@ -38,4 +38,9 @@ public class Pawn extends ChessPiece {
             return new HashSet<>(Collections.singletonList(new int[]{0, 1}));
         }
     }
+
+    @Override
+    public void onMove() {
+        this.isFirstMove = false;
+    }
 }
