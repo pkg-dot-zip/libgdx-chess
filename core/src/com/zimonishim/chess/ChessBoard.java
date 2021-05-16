@@ -13,6 +13,7 @@ import static com.badlogic.gdx.Input.Buttons.LEFT;
 public class ChessBoard implements IGameObject, IChessBoardCallback {
 
     private IDrawCallback drawCallback;
+    private Players turn = Players.WHITE;
 
     //ChessBoard graphical properties.
     public static final int fieldsAmountX = 8;
@@ -172,6 +173,16 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
 
                 ChessField clickedOnField = getChessField(getLetter(selectX), selectY);
 
+
+                //Just stop doing everything if we press a piece that is NOT the color of turn.
+                if (clickedOnField.getChessPiece() != null){
+
+                    if (clickedOnField.getChessPiece().getPlayer() != this.turn){
+                        //TODO: Fix selection. It now stays blue, despite the turn being ended.
+                        return;
+                    }
+                }
+
                 //Delegate action to method in field's class.
                 clickedOnField.onClick(this, clickedOnField);
             }
@@ -193,5 +204,19 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
     @Override
     public ArrayList<ChessField> getChessFields() {
         return this.chessFields;
+    }
+
+    @Override
+    public Players getTurn() {
+        return this.turn;
+    }
+
+    @Override
+    public void switchTurn() {
+        if (this.turn == Players.WHITE){
+            this.turn = Players.BLACK;
+        } else {
+            this.turn = Players.WHITE;
+        }
     }
 }

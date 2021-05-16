@@ -16,4 +16,7 @@ public interface IChessBoardCallback {
      * @return  arrayList with chessFields
      */
     public ArrayList<ChessField> getChessFields();
+
+    public Players getTurn();
+    public void switchTurn();
 }
