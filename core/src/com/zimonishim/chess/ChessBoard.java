@@ -13,7 +13,7 @@ import static com.badlogic.gdx.Input.Buttons.LEFT;
 public class ChessBoard implements IGameObject, IChessBoardCallback {
 
     private IDrawCallback drawCallback;
-    private Players turn = Players.WHITE;
+    private Players turn = Players.WHITE; //In chess WHITE always starts.
 
     //ChessBoard graphical properties.
     public static final int fieldsAmountX = 8;
@@ -113,7 +113,7 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
         return getChessField(letter, number).getChessPiece();
     }
 
-    public void dispose(){
+    void dispose(){
         for (ChessField chessField : this.chessFields){
             if (chessField.getChessPiece() != null){
                 chessField.getChessPiece().dispose();
@@ -121,6 +121,7 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
         }
     }
 
+    //TODO: Refactor this to a new class in the util package.
     private static ChessFieldLetter getLetter(int x){
         switch (x){
             case 1:

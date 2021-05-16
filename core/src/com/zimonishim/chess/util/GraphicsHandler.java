@@ -1,5 +1,6 @@
 package com.zimonishim.chess.util;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,6 +16,11 @@ public class GraphicsHandler {
 
     public static final int CENTER_X = WIDTH / 2;
     public static final int CENTER_Y = HEIGHT / 2;
+
+    public static void initGraphicSettings(){
+        Gdx.graphics.setVSync(true);
+        Gdx.graphics.setResizable(false); //NOTE: We do this because we still haven't made positions relative.
+    }
 
     public static TextureRegion getEmptyTextureRegion(){
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);

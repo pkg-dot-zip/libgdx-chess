@@ -1,7 +1,6 @@
 package com.zimonishim.chess;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -36,10 +35,10 @@ public class MainGame extends ApplicationAdapter implements IDrawCallback {
 		this.chessBoard = new ChessBoard(this);
 
 		//TODO: Decide whether we want to utilise this.
-		Gdx.graphics.setVSync(true);
 
 		//Global init.
-		SoundHandler.initSounds();
+		GraphicsHandler.initGraphicSettings(); //Graphics.
+		SoundHandler.initSounds();				//Sounds.
 	}
 
 	@Override

@@ -43,7 +43,7 @@ public class ChessField extends Rectangle implements IGameObject {
 
     @Override
     public void update() {
-        //TODO: Once the game is done, and we notice we don't need to call this as often we NEED to optimize this by not doing so.
+        //TODO: Once our software is done, and we notice we don't need to call this as often we NEED to optimize this by not doing so.
         //The reason we can consider this is because we only update variables when pressing the mouse,
         // so this could be once then and ONLY if then.
 
@@ -101,13 +101,12 @@ public class ChessField extends Rectangle implements IGameObject {
         setSelection(chessBoardCallback);
     }
 
-    //TODO: Actually split the movement code properly instead of this.
     private void movePiece(IChessBoardCallback chessBoardCallback){
         if (this.chessPiece == null) {
             if (this.isPossibleMove) {
                 movePieceOnBoard(chessBoardCallback);
 
-                //TODO: Perhaps write networking code call here.
+                //TODO: Write networking code call here.
                 SoundHandler.playSound(FilePathHandler.chessPieceMoveSoundPath);
             }
         }
@@ -205,7 +204,7 @@ public class ChessField extends Rectangle implements IGameObject {
     /**
      * Sets this.isSelected to false.
      */
-    public void deselect(){
+    private void deselect(){
         this.isSelected = false;
     }
 
