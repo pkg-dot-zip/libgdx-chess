@@ -21,8 +21,6 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
     //Individual fields graphical properties.
     public static final int sizeX = 20;
     public static final int sizeY = 20;
-    public static int offsetX = Gdx.graphics.getWidth() / 2 - ((sizeX * fieldsAmountX) / 2);
-    public static int offsetY = Gdx.graphics.getHeight() / 2 - ((sizeY * fieldsAmountY) / 2);
 
     private ArrayList<ChessField> chessFields = new ArrayList<>(64); //Initial capacity should be the max amount of fields.
 
@@ -94,11 +92,6 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
         }
     }
 
-    //TODO: Check whether a player is checkMate.
-    protected boolean isCheckMate(Players player){
-        return false;
-    }
-
     @Override
     public ChessField getChessField(ChessFieldLetter letter, int number){
         return this.chessFields.get((letter.x + number * fieldsAmountX) - 1); //Quick maths.
@@ -117,46 +110,15 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
         }
     }
 
-    //TODO: Refactor this to a new class in the util package.
-    private static ChessFieldLetter getLetter(int x){
-        switch (x){
-            case 1:
-                return ChessFieldLetter.A;
-            case 2:
-                return ChessFieldLetter.B;
-            case 3:
-                return ChessFieldLetter.C;
-            case 4:
-                return ChessFieldLetter.D;
-            case 5:
-                return ChessFieldLetter.E;
-            case 6:
-                return ChessFieldLetter.F;
-            case 7:
-                return ChessFieldLetter.G;
-            case 8:
-                return ChessFieldLetter.H;
-            default:
-                throw new IllegalArgumentException("This letter is not on the ChessBoard");
-                                                //TODO: Fix this. This is why this happens: ->
-                                                //Whenever you click one imaginary field left to the most-left field
-                                                //on the board, it throws this. This makes sense since we can't select
-                                                //pieces in the most-right column on our board. This means that we made a mistake
-                                                //in our calculations and that we should shift everything to the right somewhere.
-        }
-    }
-
     @Override
     public void update() {
         if (Gdx.input.isButtonJustPressed(LEFT)) { //Only run code ONCE if we press our left-Mouse button.
 
-            //Getting mouse positions.
-            int mouseX = Gdx.input.getX();
-            int mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
+            System.out.println("Mouse = (" + drawCallback.getMouseX() + ", " + drawCallback.getMouseY() + ")"); //For debugging purposes we print the location of the mouse.
 
             //Check whether the mouse was pressed on a field.
             for (ChessField clickedOnField : this.chessFields){
-                if (clickedOnField.contains(mouseX, mouseY)){
+                if (clickedOnField.contains(drawCallback.getMouseX(), drawCallback.getMouseY())){
                     //Just stop doing everything if we press a piece that is NOT the color of turn.
                     if (clickedOnField.getChessPiece() != null){
 
@@ -203,10 +165,5 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
         } else {
             this.turn = Players.WHITE;
         }
-    }
-
-    private void onResize(){
-        offsetX = Gdx.graphics.getWidth() / 2 - ((sizeX * fieldsAmountX) / 2);
-        offsetY = Gdx.graphics.getHeight() / 2 - ((sizeY * fieldsAmountY) / 2);
     }
 }
