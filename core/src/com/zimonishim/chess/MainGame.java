@@ -7,8 +7,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.zimonishim.chess.util.GraphicsHandler;
-import com.zimonishim.chess.util.SoundHandler;
 
 public class MainGame implements Screen {
 
@@ -63,7 +61,8 @@ public class MainGame implements Screen {
 	public void render(float delta) {
 		ScreenUtils.clear(Color.WHITE);
 		update();
-		this.gameHandler.getBatch().setProjectionMatrix(camera.combined);
+		this.gameHandler.getBatch().setTransformMatrix(this.camera.view);
+		this.gameHandler.getBatch().setProjectionMatrix(camera.projection);
 		this.gameHandler.getBatch().begin();
 		draw();
 		this.gameHandler.getBatch().end();
@@ -73,6 +72,7 @@ public class MainGame implements Screen {
 	@Override
 	public void resize(int width, int height) {
 		this.viewport.update(width, height);
+		this.camera.update();
 	}
 
 	@Override

@@ -22,11 +22,11 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
     //Individual fields graphical properties.
     public static final int sizeX = 20;
     public static final int sizeY = 20;
-    public static final int offsetX = GraphicsHandler.CENTER_X - ((sizeX * fieldsAmountX) / 2);
-    public static final int offsetY = GraphicsHandler.CENTER_Y - ((sizeY * fieldsAmountY) / 2);
+    public static final int offsetX = Gdx.graphics.getWidth() / 2 - ((sizeX * fieldsAmountX) / 2);
+    public static final int offsetY = Gdx.graphics.getHeight() / 2 - ((sizeY * fieldsAmountY) / 2);
 
-    private static final int RIGHT_BOUND_X = GraphicsHandler.CENTER_X + ((sizeX * fieldsAmountX) / 2);
-    private static final int RIGHT_BOUND_Y = GraphicsHandler.CENTER_Y + ((sizeY * fieldsAmountY) / 2);
+    private static final int RIGHT_BOUND_X = Gdx.graphics.getWidth() / 2 + ((sizeX * fieldsAmountX) / 2);
+    private static final int RIGHT_BOUND_Y = Gdx.graphics.getHeight() / 2 + ((sizeY * fieldsAmountY) / 2);
 
     private ArrayList<ChessField> chessFields = new ArrayList<>(64); //Initial capacity should be the max amount of fields.
 
@@ -168,7 +168,7 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
                 //Calculating what field the user selected.
                 int selectX = (mouseX - offsetX) / sizeX;
 
-                mouseY = GraphicsHandler.HEIGHT - mouseY; //Calculate mouseY from the bottom of the screen.
+                mouseY = Gdx.graphics.getHeight() - mouseY; //Calculate mouseY from the bottom of the screen.
                 int selectY = (mouseY - offsetY) / sizeY;
 
 

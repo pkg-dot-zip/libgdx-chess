@@ -10,8 +10,8 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
 		//Set screen width.
-		config.width = GraphicsHandler.WIDTH;
-		config.height = GraphicsHandler.HEIGHT;
+//		config.width = GraphicsHandler.WIDTH;
+//		config.height = GraphicsHandler.HEIGHT;
 
 		//Set other configurations.
 		config.title = "Chess";
