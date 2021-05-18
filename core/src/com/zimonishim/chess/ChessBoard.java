@@ -21,11 +21,8 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
     //Individual fields graphical properties.
     public static final int sizeX = 20;
     public static final int sizeY = 20;
-    public static final int offsetX = Gdx.graphics.getWidth() / 2 - ((sizeX * fieldsAmountX) / 2);
-    public static final int offsetY = Gdx.graphics.getHeight() / 2 - ((sizeY * fieldsAmountY) / 2);
-
-    private static final int RIGHT_BOUND_X = Gdx.graphics.getWidth() / 2 + ((sizeX * fieldsAmountX) / 2);
-    private static final int RIGHT_BOUND_Y = Gdx.graphics.getHeight() / 2 + ((sizeY * fieldsAmountY) / 2);
+    public static int offsetX = Gdx.graphics.getWidth() / 2 - ((sizeX * fieldsAmountX) / 2);
+    public static int offsetY = Gdx.graphics.getHeight() / 2 - ((sizeY * fieldsAmountY) / 2);
 
     private ArrayList<ChessField> chessFields = new ArrayList<>(64); //Initial capacity should be the max amount of fields.
 
@@ -206,5 +203,10 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
         } else {
             this.turn = Players.WHITE;
         }
+    }
+
+    private void onResize(){
+        offsetX = Gdx.graphics.getWidth() / 2 - ((sizeX * fieldsAmountX) / 2);
+        offsetY = Gdx.graphics.getHeight() / 2 - ((sizeY * fieldsAmountY) / 2);
     }
 }

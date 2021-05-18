@@ -14,9 +14,6 @@ public class GraphicsHandler {
 //    public static final int WIDTH = 800;
 //    public static final int HEIGHT = 480;
 
-//    public static final int CENTER_X = WIDTH / 2;
-//    public static final int CENTER_Y = HEIGHT / 2;
-
     public static void initGraphicSettings(){
         Gdx.graphics.setVSync(true);
         Gdx.graphics.setResizable(true); //NOTE: We do this because we still haven't made positions relative.

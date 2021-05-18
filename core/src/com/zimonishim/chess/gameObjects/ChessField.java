@@ -1,5 +1,6 @@
 package com.zimonishim.chess.gameObjects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.zimonishim.chess.*;
@@ -8,6 +9,8 @@ import com.zimonishim.chess.util.FilePathHandler;
 import com.zimonishim.chess.util.SoundHandler;
 
 import java.util.Set;
+
+import static com.badlogic.gdx.Input.Buttons.LEFT;
 
 public class ChessField extends Rectangle implements IGameObject {
 
@@ -47,6 +50,13 @@ public class ChessField extends Rectangle implements IGameObject {
         //TODO: Once our software is done, and we notice we don't need to call this as often we NEED to optimize this by not doing so.
         //The reason we can consider this is because we only update variables when pressing the mouse,
         // so this could be once then and ONLY if then.
+
+        if (Gdx.input.isButtonJustPressed(LEFT)) {
+            if (this.posX == ChessFieldLetter.A && this.posY == 1){
+                System.out.println("Mouse = (" + Gdx.input.getX() + ", " + this.y + ")");
+                System.out.println("A1 = (" + this.x + ", " + this.y + ")");
+            }
+        }
 
         color = originalColor;
 

@@ -71,7 +71,7 @@ public class MainGame implements Screen {
 	//TODO: Make resizing work. Right now the ratio is good, but we can't interact with anything because the mousePos it not right.
 	@Override
 	public void resize(int width, int height) {
-		this.viewport.update(width, height);
+		this.viewport.update(width, height, true);
 		this.camera.update();
 	}
 
