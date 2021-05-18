@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.zimonishim.chess.gameObjects.ChessField;
 import com.zimonishim.chess.gameObjects.chessPieces.*;
-import com.zimonishim.chess.util.GraphicsHandler;
 
 import java.util.ArrayList;
 
@@ -156,36 +155,23 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
 
             //Getting mouse positions.
             int mouseX = Gdx.input.getX();
-            int mouseY = Gdx.input.getY();
+            int mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
 
             //Check whether the mouse was pressed on a field.
-            if (mouseX > offsetX &&
-                mouseX < RIGHT_BOUND_X &&
-                mouseY > offsetY &&
-                mouseY < RIGHT_BOUND_Y
-            ){
+            for (ChessField clickedOnField : this.chessFields){
+                if (clickedOnField.contains(mouseX, mouseY)){
+                    //Just stop doing everything if we press a piece that is NOT the color of turn.
+                    if (clickedOnField.getChessPiece() != null){
 
-                //Calculating what field the user selected.
-                int selectX = (mouseX - offsetX) / sizeX;
-
-                mouseY = Gdx.graphics.getHeight() - mouseY; //Calculate mouseY from the bottom of the screen.
-                int selectY = (mouseY - offsetY) / sizeY;
-
-
-                ChessField clickedOnField = getChessField(getLetter(selectX), selectY);
-
-
-                //Just stop doing everything if we press a piece that is NOT the color of turn.
-                if (clickedOnField.getChessPiece() != null){
-
-                    if (clickedOnField.getChessPiece().getPlayer() != this.turn){
-                        //TODO: Fix selection. It now stays blue, despite the turn being ended.
-                        return;
+                        if (clickedOnField.getChessPiece().getPlayer() != this.turn){
+                            //TODO: Fix selection. It now stays blue, despite the turn being ended.
+                            return;
+                        }
                     }
-                }
 
-                //Delegate action to method in field's class.
-                clickedOnField.onClick(this, clickedOnField);
+                    //Delegate action to method in field's class.
+                    clickedOnField.onClick(this, clickedOnField);
+                }
             }
         }
 
@@ -194,6 +180,7 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
             chessField.update();
         }
     }
+
     @Override
     public void draw(IDrawCallback drawCallback) {
         for (ChessField chessField : this.chessFields){
