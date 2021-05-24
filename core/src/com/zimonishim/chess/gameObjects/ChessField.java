@@ -8,14 +8,17 @@ import com.zimonishim.chess.util.FilePathHandler;
 import com.zimonishim.chess.util.SoundHandler;
 import com.zimonishim.chess.util.networking.IClientCallback;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Set;
 
 public class ChessField extends Rectangle implements IGameObject, Serializable {
 
     //Colors.
-    private Color color;         //The current color on the screen.
-    private Color originalColor; //White or Brown.
+    private transient Color color;         //The current color on the screen.
+    private transient Color originalColor; //White or Brown.
 
     //Field's piece's properties.
     private boolean isSelected = false;
@@ -221,5 +224,32 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
      */
     private void setPossibleMove(boolean possibleMove) {
         this.isPossibleMove = possibleMove;
+    }
+
+    private void writeObject(ObjectOutputStream s) throws IOException {
+        s.defaultWriteObject();
+        s.writeFloat(this.color.r);
+        s.writeFloat(this.color.g);
+        s.writeFloat(this.color.b);
+        s.writeFloat(this.color.a);
+        s.writeFloat(this.originalColor.r);
+        s.writeFloat(this.originalColor.g);
+        s.writeFloat(this.originalColor.b);
+        s.writeFloat(this.originalColor.a);
+    }
+
+    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
+        s.defaultReadObject();
+        float colorR = s.readFloat();
+        float colorG = s.readFloat();
+        float colorB = s.readFloat();
+        float colorA = s.readFloat();
+        float originalColorR = s.readFloat();
+        float originalColorG = s.readFloat();
+        float originalColorB = s.readFloat();
+        float originalColorA = s.readFloat();
+
+        this.color = new Color(colorR, colorG, colorB, colorA);
+        this.originalColor = new Color(originalColorR, originalColorG, originalColorB, originalColorA);
     }
 }
