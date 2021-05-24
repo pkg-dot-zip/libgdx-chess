@@ -3,19 +3,21 @@ package com.zimonishim.chess;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.zimonishim.chess.util.networking.Client;
+import com.zimonishim.chess.util.networking.IClientCallback;
 
-public class MainGame implements Screen {
+public class MainGame implements Screen, IClientCallback {
 
 	private final GameHandler gameHandler;
-
-	//Game Attributes.
 	private ChessBoard chessBoard;
+	private Client client;
 
 	public MainGame (GameHandler gameHandler) {
 		this.gameHandler = gameHandler;
+		this.chessBoard = new ChessBoard(gameHandler, this);
 
-		//Value init.
-		this.chessBoard = new ChessBoard(gameHandler);
+		//Networking.
+		this.client = new Client(chessBoard);
 	}
 
 	private void update(){
@@ -33,9 +35,6 @@ public class MainGame implements Screen {
 
 	@Override
 	public void dispose () {
-		//Dispose Textures.
-		this.chessBoard.dispose();
-
 		//Dispose the entire game.
 		this.gameHandler.dispose();
 	}
@@ -75,5 +74,10 @@ public class MainGame implements Screen {
 	@Override
 	public void hide() {
 
+	}
+
+	@Override
+	public Client getClient() {
+		return this.client;
 	}
 }

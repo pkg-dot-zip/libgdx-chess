@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.zimonishim.chess.gameObjects.ChessField;
 import com.zimonishim.chess.gameObjects.chessPieces.*;
+import com.zimonishim.chess.util.networking.IClientCallback;
 
 import java.util.ArrayList;
 
@@ -12,6 +13,7 @@ import static com.badlogic.gdx.Input.Buttons.LEFT;
 public class ChessBoard implements IGameObject, IChessBoardCallback {
 
     private IDrawCallback drawCallback;
+    private IClientCallback clientCallback;
     private Players turn = Players.WHITE; //In chess WHITE always starts.
 
     //ChessBoard graphical properties.
@@ -24,8 +26,9 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
 
     private ArrayList<ChessField> chessFields = new ArrayList<>(64); //Initial capacity should be the max amount of fields.
 
-    public ChessBoard(IDrawCallback drawCallback) {
+    public ChessBoard(IDrawCallback drawCallback, IClientCallback clientCallback) {
         this.drawCallback = drawCallback;
+        this.clientCallback = clientCallback;
 
         //Fill chessFields list.
         fillBoard();
@@ -76,19 +79,19 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
     }
     
     private void fillRowWithSpecialPieces(int row, Players player){
-        getChessField(ChessFieldLetter.A, row).setChessPiece(new Rook(drawCallback, player));
-        getChessField(ChessFieldLetter.B, row).setChessPiece(new Knight(drawCallback, player));
-        getChessField(ChessFieldLetter.C, row).setChessPiece(new Bishop(drawCallback, player));
-        getChessField(ChessFieldLetter.D, row).setChessPiece(new Queen(drawCallback, player));
-        getChessField(ChessFieldLetter.E, row).setChessPiece(new King(drawCallback, player));
-        getChessField(ChessFieldLetter.F, row).setChessPiece(new Bishop(drawCallback, player));
-        getChessField(ChessFieldLetter.G, row).setChessPiece(new Knight(drawCallback, player));
-        getChessField(ChessFieldLetter.H, row).setChessPiece(new Rook(drawCallback, player));
+        getChessField(ChessFieldLetter.A, row).setChessPiece(new Rook(player));
+        getChessField(ChessFieldLetter.B, row).setChessPiece(new Knight(player));
+        getChessField(ChessFieldLetter.C, row).setChessPiece(new Bishop(player));
+        getChessField(ChessFieldLetter.D, row).setChessPiece(new Queen(player));
+        getChessField(ChessFieldLetter.E, row).setChessPiece(new King(player));
+        getChessField(ChessFieldLetter.F, row).setChessPiece(new Bishop(player));
+        getChessField(ChessFieldLetter.G, row).setChessPiece(new Knight(player));
+        getChessField(ChessFieldLetter.H, row).setChessPiece(new Rook(player));
     }
 
     private void fillRowWithPawns(int row, Players player){
         for (ChessFieldLetter letter : ChessFieldLetter.values()){
-            getChessField(letter, row).setChessPiece(new Pawn(drawCallback, player));
+            getChessField(letter, row).setChessPiece(new Pawn(player));
         }
     }
 
@@ -100,14 +103,6 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
     @Override
     public ChessPiece getChessPiece(ChessFieldLetter letter, int number){
         return getChessField(letter, number).getChessPiece();
-    }
-
-    void dispose(){
-        for (ChessField chessField : this.chessFields){
-            if (chessField.getChessPiece() != null){
-                chessField.getChessPiece().dispose();
-            }
-        }
     }
 
     @Override
@@ -129,7 +124,7 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
                     }
 
                     //Delegate action to method in field's class.
-                    clickedOnField.onClick(this, clickedOnField);
+                    clickedOnField.onClick(this, this.clientCallback, clickedOnField);
                 }
             }
         }
@@ -149,6 +144,11 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
     @Override
     public ArrayList<ChessField> getChessFields() {
         return this.chessFields;
+    }
+
+    @Override
+    public void setChessFields(ArrayList<ChessField> chessFields) {
+        this.chessFields = chessFields;
     }
 
     @Override

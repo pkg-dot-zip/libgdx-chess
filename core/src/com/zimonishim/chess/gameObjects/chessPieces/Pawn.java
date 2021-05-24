@@ -16,16 +16,16 @@ public class Pawn extends ChessPiece {
 
     private boolean isFirstMove = true;
 
-    public Pawn(IDrawCallback drawCallback, Players player) {
-        super(drawCallback, player);
+    public Pawn(Players player) {
+        super(player);
     }
 
     @Override
-    protected Texture getPlayerTexture(Players player) {
+    protected String getPlayerTexture(Players player) {
         if (player == Players.WHITE){
-            return new Texture(Gdx.files.internal(chessPieceTexturesPath + "/white_pawn.png"));
+            return chessPieceTexturesPath + "/white_pawn.png";
         } else {
-            return new Texture(Gdx.files.internal(chessPieceTexturesPath + "/black_pawn.png"));
+            return chessPieceTexturesPath + "/black_pawn.png";
         }
     }
 

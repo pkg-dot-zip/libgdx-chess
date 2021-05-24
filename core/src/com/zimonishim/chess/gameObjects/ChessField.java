@@ -6,10 +6,12 @@ import com.zimonishim.chess.*;
 import com.zimonishim.chess.gameObjects.chessPieces.ChessPiece;
 import com.zimonishim.chess.util.FilePathHandler;
 import com.zimonishim.chess.util.SoundHandler;
+import com.zimonishim.chess.util.networking.IClientCallback;
 
+import java.io.Serializable;
 import java.util.Set;
 
-public class ChessField extends Rectangle implements IGameObject {
+public class ChessField extends Rectangle implements IGameObject, Serializable {
 
     //Colors.
     private Color color;         //The current color on the screen.
@@ -82,7 +84,7 @@ public class ChessField extends Rectangle implements IGameObject {
 
     //TODO: Only allow input on the players turn. This is necessary for implementing attacks.
     //TODO: Whenever there is a chessPiece of the opponent here, check if we can attack that piece.
-    public void onClick(IChessBoardCallback chessBoardCallback, ChessField clickedOnField){ //TODO: Isn't clickedOnField always this?! Change this!
+    public void onClick(IChessBoardCallback chessBoardCallback, IClientCallback clientCallback, ChessField clickedOnField){ //TODO: Isn't clickedOnField always this?! Change this!
         //Reset selection & possible moves.
         resetPossibleMoves(chessBoardCallback);
 
@@ -92,18 +94,17 @@ public class ChessField extends Rectangle implements IGameObject {
 
         //Should this be an else-if with the code in SetAllMoves? ->
         //Move the piece.
-        movePiece(chessBoardCallback);
+        movePiece(chessBoardCallback, clientCallback);
 
         //Update selection.
         setSelection(chessBoardCallback);
     }
 
-    private void movePiece(IChessBoardCallback chessBoardCallback){
+    private void movePiece(IChessBoardCallback chessBoardCallback, IClientCallback clientCallback){
         if (this.chessPiece == null) {
             if (this.isPossibleMove) {
                 movePieceOnBoard(chessBoardCallback);
-
-                //TODO: Write networking code call here.
+                clientCallback.getClient().sendChessFields(chessBoardCallback);
                 SoundHandler.playSound(FilePathHandler.chessPieceMoveSoundPath);
             }
         }
@@ -123,7 +124,7 @@ public class ChessField extends Rectangle implements IGameObject {
         //This means we moved! So let's move it, and then change turns.
         this.setChessPiece(pieceToMove);
         this.getChessPiece().onMove();
-        chessBoardCallback.switchTurn();
+//        chessBoardCallback.switchTurn(); //TODO: Fix this.
     }
 
     private void setSelection(IChessBoardCallback chessBoardCallback){

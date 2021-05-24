@@ -13,6 +13,8 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zimonishim.chess.util.GraphicsHandler;
 import com.zimonishim.chess.util.SoundHandler;
+import com.zimonishim.chess.util.TextureHandler;
+import com.zimonishim.chess.util.networking.Client;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 /**
@@ -34,7 +36,6 @@ public class GameHandler extends Game implements IDrawCallback {
     public void create() {
         //Camera
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-//		this.camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0); //TODO: Does nothing?! Remove?!
         this.viewport = new StretchViewport(camera.viewportWidth, camera.viewportHeight, camera); //TODO: Make it look better.
 
         //Create the batch.
@@ -49,6 +50,7 @@ public class GameHandler extends Game implements IDrawCallback {
 
         //Global init.
         GraphicsHandler.initGraphicSettings();  //Graphics.
+        TextureHandler.initTextures();
         SoundHandler.initSounds();			    //Sounds.
 
         //Open the mainMenu.
@@ -76,6 +78,7 @@ public class GameHandler extends Game implements IDrawCallback {
     public void dispose() {
         //Dispose Textures.
         this.batch.dispose();
+        TextureHandler.dispose();
 
         //Dispose Text.
         this.font.dispose();

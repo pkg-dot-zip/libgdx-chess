@@ -1,9 +1,6 @@
 package com.zimonishim.chess.gameObjects.chessPieces;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.zimonishim.chess.ChessBoard;
-import com.zimonishim.chess.IDrawCallback;
 import com.zimonishim.chess.Players;
 
 import java.util.HashSet;
@@ -12,16 +9,16 @@ import java.util.Set;
 import static com.zimonishim.chess.util.FilePathHandler.chessPieceTexturesPath;
 
 public class Bishop extends ChessPiece {
-    public Bishop(IDrawCallback drawCallback, Players player) {
-        super(drawCallback, player);
+    public Bishop(Players player) {
+        super(player);
     }
 
     @Override
-    protected Texture getPlayerTexture(Players player) {
+    protected String getPlayerTexture(Players player) {
         if (player == Players.WHITE){
-            return new Texture(Gdx.files.internal(chessPieceTexturesPath + "/white_bishop.png"));
+            return chessPieceTexturesPath + "/white_bishop.png";
         } else {
-            return new Texture(Gdx.files.internal(chessPieceTexturesPath + "/black_bishop.png"));
+            return chessPieceTexturesPath + "/black_bishop.png";
         }
     }
 
