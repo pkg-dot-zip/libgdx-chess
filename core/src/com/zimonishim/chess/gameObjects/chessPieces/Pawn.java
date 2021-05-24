@@ -31,7 +31,6 @@ public class Pawn extends ChessPiece {
 
     @Override
     public Set<int[]> getPossibleMoves() {
-        //TODO: Only allow one square to be moved if this is NOT the first move.
         if (isFirstMove){
             return new HashSet<>(Arrays.asList(new int[]{0, 1}, new int[]{0, 2}));
         } else {

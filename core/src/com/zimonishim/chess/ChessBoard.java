@@ -134,7 +134,6 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
             }
         }
 
-        //Update all chessFields in this ArrayList.
         for (ChessField chessField : this.chessFields) {
             chessField.update();
         }
@@ -143,7 +142,6 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
     @Override
     public void draw(IDrawCallback drawCallback) {
         for (ChessField chessField : this.chessFields){
-            //Draw fields & chessPieces.
             chessField.draw(drawCallback);
         }
     }
