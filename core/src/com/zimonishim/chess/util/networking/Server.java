@@ -26,7 +26,10 @@ public class Server {
                     ObjectInputStream objectInputStream2 = new ObjectInputStream(socket2.getInputStream());
                     System.out.println("Initialised input and output streams");
 
-
+                    objectOutputStream1.writeInt(0);
+                    objectOutputStream1.flush();
+                    objectOutputStream2.writeInt(1);
+                    objectOutputStream2.flush();
                     new Thread(() -> {
                         while (true) {
 

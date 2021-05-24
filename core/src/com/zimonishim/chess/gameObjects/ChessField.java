@@ -88,6 +88,10 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
     //TODO: Only allow input on the players turn. This is necessary for implementing attacks.
     //TODO: Whenever there is a chessPiece of the opponent here, check if we can attack that piece.
     public void onClick(IChessBoardCallback chessBoardCallback, IClientCallback clientCallback, ChessField clickedOnField){ //TODO: Isn't clickedOnField always this?! Change this!
+        if (clientCallback.getPlayer() != chessBoardCallback.getTurn()) {
+            return;
+        }
+
         //Reset selection & possible moves.
         resetPossibleMoves(chessBoardCallback);
 
@@ -127,7 +131,7 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
         //This means we moved! So let's move it, and then change turns.
         this.setChessPiece(pieceToMove);
         this.getChessPiece().onMove();
-//        chessBoardCallback.switchTurn(); //TODO: Fix this.
+        chessBoardCallback.switchTurn(); //TODO: Fix this.
     }
 
     private void setSelection(IChessBoardCallback chessBoardCallback){

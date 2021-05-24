@@ -31,6 +31,7 @@ public class MainGame implements Screen, IClientCallback {
 
 	private void drawUI(IDrawCallback drawCallback){
 		drawCallback.getFont().draw(drawCallback.getBatch(), "Turn: " + this.chessBoard.getTurn().name(), 200, 200);
+		drawCallback.getFont().draw(drawCallback.getBatch(), "You are " + getPlayer(), 200, 220);
 	}
 
 	@Override
@@ -79,5 +80,10 @@ public class MainGame implements Screen, IClientCallback {
 	@Override
 	public Client getClient() {
 		return this.client;
+	}
+
+	@Override
+	public Players getPlayer() {
+		return client.getPlayer();
 	}
 }

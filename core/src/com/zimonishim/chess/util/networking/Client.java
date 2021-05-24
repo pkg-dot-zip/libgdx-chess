@@ -1,6 +1,7 @@
 package com.zimonishim.chess.util.networking;
 
 import com.zimonishim.chess.IChessBoardCallback;
+import com.zimonishim.chess.Players;
 import com.zimonishim.chess.gameObjects.ChessField;
 
 import java.io.IOException;
@@ -17,16 +18,22 @@ public class Client {
 
     private ObjectOutputStream objectOutputStream;
 
+    private Players player;
+
     public Client(IChessBoardCallback chessBoardCallback) {
         new Thread(() -> {
 
             try {
                 Socket socket = new Socket(IP, PORT);
+
                 System.out.println("Test1");
                 ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
                 System.out.println("Test2");
                 objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-                System.out.println("Gucci gang" + objectOutputStream);
+
+                System.out.println("ASDASDAS");
+                player = (objectInputStream.readInt() == 0) ? Players.WHITE : Players.BLACK;
+                System.out.println("ASDSADASDKJASL");
 
                 while (true) {
                     //TODO: Make List instead of ArrayList.
@@ -57,5 +64,9 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Players getPlayer() {
+        return this.player;
     }
 }
