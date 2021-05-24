@@ -32,6 +32,7 @@ public class Client {
                     //TODO: Make List instead of ArrayList.
                     try {
                         ArrayList<ChessField> chessFieldArrayList = (ArrayList<ChessField>) objectInputStream.readObject();
+                        System.out.println("Received new board state: " + chessFieldArrayList);
 
                         chessBoardCallback.setChessFields(chessFieldArrayList);
                         chessBoardCallback.switchTurn();
@@ -50,7 +51,7 @@ public class Client {
 
     public void sendChessFields(IChessBoardCallback chessBoardCallback) {
         try {
-            System.out.println(chessBoardCallback.getChessFields());
+            System.out.println("Sent new board state: " + chessBoardCallback.getChessFields());
             objectOutputStream.writeObject(chessBoardCallback.getChessFields());
             objectOutputStream.flush();
         } catch (IOException e) {
