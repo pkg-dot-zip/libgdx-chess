@@ -37,8 +37,8 @@ public class MainMenuScreen implements Screen {
     }
 
     private void draw(){
-        gameHandler.getFont().draw(gameHandler.getBatch(), "Main Menu", 100, 100);
-        gameHandler.getFont().draw(gameHandler.getBatch(), "Tap the screen to begin...", 100, 120);
+        gameHandler.drawText("Main Menu", 100, 100);
+        gameHandler.drawText("Tap the screen to begin...", 100, 120);
     }
 
     @Override

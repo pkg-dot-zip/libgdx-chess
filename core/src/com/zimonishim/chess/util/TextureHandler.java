@@ -4,12 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import static com.zimonishim.chess.util.FilePathHandler.chessPieceTexturesPath;
 
 public class TextureHandler {
 
-    private static HashMap<String, Texture> textures = new HashMap<>();
+    private static Map<String, Texture> textures = new HashMap<>();
 
     public static void initTextures(){
         addTexture(chessPieceTexturesPath + "/white_bishop.png");

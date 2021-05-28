@@ -13,8 +13,6 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zimonishim.chess.util.GraphicsHandler;
 import com.zimonishim.chess.util.SoundHandler;
-import com.zimonishim.chess.util.TextureHandler;
-import com.zimonishim.chess.util.networking.Client;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 /**
@@ -26,32 +24,28 @@ public class GameHandler extends Game implements IDrawCallback {
     private BitmapFont font;
     private ShapeDrawer shapeDrawer;
 
-    private final Vector2 mouseInWorld2D = new Vector2();
-    private final Vector3 mouseInWorld3D = new Vector3();
-
     private OrthographicCamera camera;
     private Viewport viewport;
 
+    private final Vector2 mouseInWorld2D = new Vector2();
+    private final Vector3 mouseInWorld3D = new Vector3();
+
     @Override
     public void create() {
+        //Global init.
+        GraphicsHandler.initGraphics();
+        SoundHandler.initSounds();
+
         //Camera
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.viewport = new StretchViewport(camera.viewportWidth, camera.viewportHeight, camera); //TODO: Make it look better.
 
-        //Create the batch.
         this.batch = new SpriteBatch();
 
-        //Creates a BitMapFont with the Arial font and the color black.
-        this.font = new BitmapFont(); //Arial.
+        this.font = new BitmapFont(); //Arial font and black color.
         this.font.setColor(Color.BLACK);
 
-        //Create the shapeDrawer.
-        this.shapeDrawer = new ShapeDrawer(getBatch(), GraphicsHandler.getEmptyTextureRegion());
-
-        //Global init.
-        GraphicsHandler.initGraphicSettings();  //Graphics.
-        TextureHandler.initTextures();
-        SoundHandler.initSounds();			    //Sounds.
+        this.shapeDrawer = new ShapeDrawer(getBatch(), GraphicsHandler.getEmptyTextureRegion()); //Empty texture region is initialised in GraphicsHandler.
 
         //Open the mainMenu.
         this.setScreen(new MainMenuScreen(this));
@@ -76,15 +70,10 @@ public class GameHandler extends Game implements IDrawCallback {
 
     @Override
     public void dispose() {
-        //Dispose Textures.
-        this.batch.dispose();
-        TextureHandler.dispose();
-
-        //Dispose Text.
-        this.font.dispose();
-
-        //Dispose Sounds.
-        SoundHandler.dispose();
+        this.batch.dispose();           //Dispose Textures.
+        GraphicsHandler.dispose();      //Dispose Textures.
+        this.font.dispose();            //Dispose Text.
+        SoundHandler.dispose();         //Dispose Sounds.
     }
 
     @Override
@@ -100,6 +89,11 @@ public class GameHandler extends Game implements IDrawCallback {
     @Override
     public BitmapFont getFont() {
         return this.font;
+    }
+
+    @Override
+    public void drawText(String text, int posX, int posY) {
+        getFont().draw(getBatch(), text, posX, posY);
     }
 
     @Override

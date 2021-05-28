@@ -12,6 +12,8 @@ public interface IDrawCallback {
     public ShapeDrawer getShapeDrawer();
     public BitmapFont getFont();
 
+    public void drawText(String text, int posX, int posY);
+
     //Camera.
     public OrthographicCamera getCamera();
     public Viewport getViewPort();

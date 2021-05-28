@@ -7,13 +7,14 @@ import com.zimonishim.chess.gameObjects.chessPieces.*;
 import com.zimonishim.chess.util.networking.IClientCallback;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.badlogic.gdx.Input.Buttons.LEFT;
 
 public class ChessBoard implements IGameObject, IChessBoardCallback {
 
-    private IDrawCallback drawCallback;
-    private IClientCallback clientCallback;
+    private final IDrawCallback drawCallback;
+    private final IClientCallback clientCallback;
     private Players turn = Players.WHITE; //In chess WHITE always starts.
 
     //ChessBoard graphical properties.
@@ -24,13 +25,11 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
     public static final int sizeX = 20;
     public static final int sizeY = 20;
 
-    private ArrayList<ChessField> chessFields = new ArrayList<>(64); //Initial capacity should be the max amount of fields.
+    private List<ChessField> chessFields = new ArrayList<>(64); //Initial capacity should be the max amount of fields.
 
     public ChessBoard(IDrawCallback drawCallback, IClientCallback clientCallback) {
         this.drawCallback = drawCallback;
         this.clientCallback = clientCallback;
-
-        //Fill chessFields list.
         fillBoard();
     }
 
@@ -47,24 +46,17 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
 
                 //Deciding the position of the field.
                 ChessFieldLetter posX = ChessFieldLetter.values()[x];
-                int posY = y;
 
                 //Deciding the color of the field.
                 colorBool = !colorBool;
+                color = (colorBool) ? Color.BROWN : Color.WHITE;
 
-                if (colorBool){
-                    color = Color.BROWN;
-                } else {
-                    color = Color.WHITE;
-                }
-
-                //Adding the field to this ArrayList.
                 chessFields.add(new ChessField(
-                        posX,   //PosX.
-                        posY,   //PosY.
-                        sizeX,  //SizeX.
-                        sizeY,  //SizeY.
-                        color   //Color.
+                        posX,
+                        y,
+                        sizeX,
+                        sizeY,
+                        color
                 ));
             }
         }
@@ -97,7 +89,7 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
 
     @Override
     public ChessField getChessField(ChessFieldLetter letter, int number){
-        return this.chessFields.get((letter.x + number * fieldsAmountX) - 1); //Quick maths.
+        return this.chessFields.get((letter.x + number * fieldsAmountX) - 1);
     }
 
     @Override
@@ -107,9 +99,9 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
 
     @Override
     public void update() {
-        if (Gdx.input.isButtonJustPressed(LEFT)) { //Only run code ONCE if we press our left-Mouse button.
+        if (Gdx.input.isButtonJustPressed(LEFT)) { //Only runs code ONCE when we press our left-Mouse button.
 
-            System.out.println("Mouse = (" + drawCallback.getMouseX() + ", " + drawCallback.getMouseY() + ")"); //For debugging purposes we print the location of the mouse.
+            System.out.println("Mouse = (" + drawCallback.getMouseX() + ", " + drawCallback.getMouseY() + ")");
 
             //Check whether the mouse was pressed on a field.
             for (ChessField clickedOnField : this.chessFields){
@@ -142,12 +134,12 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
     }
 
     @Override
-    public ArrayList<ChessField> getChessFields() {
+    public List<ChessField> getChessFields() {
         return this.chessFields;
     }
 
     @Override
-    public void setChessFields(ArrayList<ChessField> chessFields) {
+    public void setChessFields(List<ChessField> chessFields) {
         this.chessFields = chessFields;
     }
 
@@ -158,10 +150,6 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
 
     @Override
     public void switchTurn() {
-        if (this.turn == Players.WHITE){
-            this.turn = Players.BLACK;
-        } else {
-            this.turn = Players.WHITE;
-        }
+        this.turn = (this.turn == Players.WHITE) ? Players.BLACK : Players.WHITE;
     }
 }

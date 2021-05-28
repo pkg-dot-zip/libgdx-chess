@@ -1,7 +1,6 @@
 package com.zimonishim.chess.gameObjects.chessPieces;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.zimonishim.chess.IDrawCallback;
 import com.zimonishim.chess.Players;
 import com.zimonishim.chess.util.TextureHandler;
 
@@ -34,7 +33,6 @@ public abstract class ChessPiece implements Serializable {
         return this.player;
     }
 
-    public void onMove(){
-        //Special method that doesn't need to be overridden.
-    }
+    //Special method that doesn't need to be overridden.
+    public void onMove(){ }
 }

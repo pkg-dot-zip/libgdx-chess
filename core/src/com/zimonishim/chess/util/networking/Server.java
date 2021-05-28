@@ -24,39 +24,32 @@ public class Server {
                     ObjectInputStream objectInputStream1 = new ObjectInputStream(socket1.getInputStream());
                     ObjectOutputStream objectOutputStream2 = new ObjectOutputStream(socket2.getOutputStream());
                     ObjectInputStream objectInputStream2 = new ObjectInputStream(socket2.getInputStream());
-                    System.out.println("Initialised input and output streams");
+                    System.out.println("Initialised input and output streams.");
 
                     objectOutputStream1.writeInt(0);
                     objectOutputStream1.flush();
                     objectOutputStream2.writeInt(1);
                     objectOutputStream2.flush();
+
                     new Thread(() -> {
                         while (true) {
-
                             try {
                                 objectOutputStream1.writeObject(objectInputStream2.readObject());
-                                System.out.println("Send object from socket 2 to 1.");
-                            } catch (ClassNotFoundException classNotFoundException) {
+                                System.out.println("Sent object from socket 2 to 1.");
+                            } catch (ClassNotFoundException | IOException classNotFoundException) {
                                 classNotFoundException.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
                             }
-
                         }
                     }).start();
 
                     new Thread(() -> {
                         while (true) {
-
                             try {
                                 objectOutputStream2.writeObject(objectInputStream1.readObject());
-                                System.out.println("Send object from socket 1 to 2.");
-                            } catch (ClassNotFoundException classNotFoundException) {
+                                System.out.println("Sent object from socket 1 to 2.");
+                            } catch (ClassNotFoundException | IOException classNotFoundException) {
                                 classNotFoundException.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
                             }
-
                         }
                     }).start();
 

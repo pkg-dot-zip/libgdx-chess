@@ -15,8 +15,6 @@ public class MainGame implements Screen, IClientCallback {
 	public MainGame (GameHandler gameHandler) {
 		this.gameHandler = gameHandler;
 		this.chessBoard = new ChessBoard(gameHandler, this);
-
-		//Networking.
 		this.client = new Client(chessBoard);
 	}
 
@@ -30,13 +28,12 @@ public class MainGame implements Screen, IClientCallback {
 	}
 
 	private void drawUI(IDrawCallback drawCallback){
-		drawCallback.getFont().draw(drawCallback.getBatch(), "Turn: " + this.chessBoard.getTurn().name(), 200, 200);
-		drawCallback.getFont().draw(drawCallback.getBatch(), "You are " + getPlayer(), 200, 220);
+		drawCallback.drawText("Turn: " + this.chessBoard.getTurn().name(), 200, 200);
+		drawCallback.drawText("You are " + getPlayer(), 200, 220);
 	}
 
 	@Override
 	public void dispose () {
-		//Dispose the entire game.
 		this.gameHandler.dispose();
 	}
 
@@ -64,17 +61,17 @@ public class MainGame implements Screen, IClientCallback {
 
 	@Override
 	public void pause() {
-
+		System.out.println("Game has been paused.");
 	}
 
 	@Override
 	public void resume() {
-
+		System.out.println("Game has been resumed.");
 	}
 
 	@Override
 	public void hide() {
-
+		System.out.println("Game has been hidden.");
 	}
 
 	@Override

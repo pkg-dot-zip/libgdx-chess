@@ -1,8 +1,5 @@
 package com.zimonishim.chess.gameObjects.chessPieces;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.zimonishim.chess.IDrawCallback;
 import com.zimonishim.chess.Players;
 
 import java.util.Arrays;

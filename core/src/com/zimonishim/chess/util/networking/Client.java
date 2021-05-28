@@ -9,6 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Client {
 
@@ -25,20 +26,19 @@ public class Client {
 
             try {
                 Socket socket = new Socket(IP, PORT);
+                System.out.println("Initialised socket.");
 
-                System.out.println("Test1");
                 ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
-                System.out.println("Test2");
+                System.out.println("Initialised objectInputStream.");
                 objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+                System.out.println("Initialised objectOutputStream.");
 
-                System.out.println("ASDASDAS");
                 player = (objectInputStream.readInt() == 0) ? Players.WHITE : Players.BLACK;
-                System.out.println("ASDSADASDKJASL");
 
                 while (true) {
                     //TODO: Make List instead of ArrayList.
                     try {
-                        ArrayList<ChessField> chessFieldArrayList = (ArrayList<ChessField>) objectInputStream.readObject();
+                        List<ChessField> chessFieldArrayList = (ArrayList<ChessField>) objectInputStream.readObject();
                         System.out.println("Received new board state: " + chessFieldArrayList);
 
                         chessBoardCallback.setChessFields(chessFieldArrayList);

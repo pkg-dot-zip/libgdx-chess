@@ -4,10 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class SoundHandler {
 
-    private static HashMap<String, Sound> sounds = new HashMap<>();
+    private static Map<String, Sound> sounds = new HashMap<>();
 
     public static void initSounds(){
         addSound(FilePathHandler.chessPieceMoveSoundPath);
