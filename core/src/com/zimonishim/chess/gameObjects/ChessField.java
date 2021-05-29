@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class ChessField extends Rectangle implements IGameObject, Serializable {
@@ -53,11 +55,11 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
         // so this could be once then and ONLY if then.
         color = originalColor;
 
-        if (isSelected){
-            if (this.chessPiece != null){
+        if (isSelected) {
+            if (this.chessPiece != null) {
                 color = Color.CYAN;
             }
-        } else if (isPossibleMove){
+        } else if (isPossibleMove) {
             color = Color.YELLOW;
         }
     }
@@ -67,7 +69,7 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
         //Draw the field ONLY, so without the piece.
         drawCallback.getShapeDrawer().filledRectangle(this, color);
 
-        if (this.chessPiece == null){
+        if (this.chessPiece == null) {
             return;
         }
 
@@ -80,7 +82,7 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
     }
 
     //TODO: Whenever there is a chessPiece of the opponent here, check if we can attack that piece.
-    public void onClick(IChessBoardCallback chessBoardCallback, IClientCallback clientCallback, ChessField clickedOnField){ //TODO: Isn't clickedOnField always this?! Change this!
+    public void onClick(IChessBoardCallback chessBoardCallback, IClientCallback clientCallback, ChessField clickedOnField) { //TODO: Isn't clickedOnField always this?! Change this!
         if (clientCallback.getPlayer() != chessBoardCallback.getTurn()) {
             return;
         }
@@ -91,7 +93,7 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
         setSelection(chessBoardCallback);                   //Update selection.
     }
 
-    private void movePiece(IChessBoardCallback chessBoardCallback, IClientCallback clientCallback){
+    private void movePiece(IChessBoardCallback chessBoardCallback, IClientCallback clientCallback) {
         if (this.chessPiece == null && this.isPossibleMove) {
             movePieceOnBoard(chessBoardCallback);
             clientCallback.getClient().sendChessFields(chessBoardCallback);
@@ -99,28 +101,28 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
         }
     }
 
-    private void movePieceOnBoard(IChessBoardCallback chessBoardCallback){
-        ChessPiece pieceToMove = null;
-
-        for (ChessField chessField : chessBoardCallback.getChessFields()){
-            if (chessField.isSelected){
-                pieceToMove = chessField.getChessPiece();
+    private void movePieceOnBoard(IChessBoardCallback chessBoardCallback) {
+        for (ChessField chessField : chessBoardCallback.getChessFields()) {
+            if (chessField.isSelected) {
+                ChessPiece pieceToMove = chessField.getChessPiece();
                 chessField.setChessPiece(null);
+                this.setChessPiece(pieceToMove);
+                pieceToMove.setChessField(this);
+                //This means we moved! So let's move it, and then change turns.
+                this.getChessPiece().onMove();
+                chessBoardCallback.switchTurn();
+
+                break;
             }
         }
-
-        //This means we moved! So let's move it, and then change turns.
-        this.setChessPiece(pieceToMove);
-        this.getChessPiece().onMove();
-        chessBoardCallback.switchTurn();
     }
 
-    private void setSelection(IChessBoardCallback chessBoardCallback){
-        if (isSelected){
+    private void setSelection(IChessBoardCallback chessBoardCallback) {
+        if (isSelected) {
             resetPossibleMoves(chessBoardCallback); //Make sure deselecting a piece removes all yellow fields.
             deselect();
         } else {
-            for (ChessField chessField : chessBoardCallback.getChessFields()){
+            for (ChessField chessField : chessBoardCallback.getChessFields()) {
                 chessField.deselect();
             }
 
@@ -128,61 +130,44 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
         }
     }
 
-    private void setAllMoves(IChessBoardCallback chessBoardCallback, ChessField clickedOnField){
-        if (clickedOnField.getChessPiece() != null){
+    private void setAllMoves(IChessBoardCallback chessBoardCallback, ChessField clickedOnField) {
+        if (clickedOnField.getChessPiece() != null) {
             ChessPiece chessPiece = clickedOnField.getChessPiece();
 
             Set<int[]> set = chessPiece.getPossibleMoves();
+            System.out.println(set);
 
-            for (ChessField chessField : chessBoardCallback.getChessFields()){
+            List<ChessField> chessFields = chessBoardCallback.getChessFields();
+            for (ChessField chessField : chessFields) {
+                for (int[] ints : set) {
+                    int x = chessField.getPos()[0] - clickedOnField.getPos()[0];
+                    int y = chessField.getPos()[1] - clickedOnField.getPos()[1];
 
-                if (chessPiece.getPlayer() == Players.WHITE){   //White piece.
-
-                    //If the piece is WHITE, calculate what fields are eligible
-                    // for movement and then set the possibleMove boolean to true.
-                    for (int[] ints : set){
-                        int x = chessField.getPos()[0] - clickedOnField.getPos()[0];
-                        int y = chessField.getPos()[1] - clickedOnField.getPos()[1];
-
-                        if (x == ints[0] && y == ints[1]){
-                            chessField.setPossibleMove(true);
-                        }
-                    }
-
-                } else {                                        //Black piece.
-
-                    //If the piece is BLACK, calculate what fields are eligible
-                    // for movement and then set the possibleMove boolean to true.
-                    for (int[] ints : set){
-                        int x = clickedOnField.getPos()[0] - chessField.getPos()[0];
-                        int y = clickedOnField.getPos()[1] - chessField.getPos()[1];
-
-                        if (x == ints[0] && y == ints[1]){
-                            chessField.setPossibleMove(true);
-                        }
+                    if (x == ints[0] && y == ints[1]) {
+                        chessField.setPossibleMove(true);
                     }
                 }
             }
         }
     }
 
-    private void resetPossibleMoves(IChessBoardCallback chessBoardCallback){
-        for (ChessField chessField : chessBoardCallback.getChessFields()){
-            if (chessField != this){
+    private void resetPossibleMoves(IChessBoardCallback chessBoardCallback) {
+        for (ChessField chessField : chessBoardCallback.getChessFields()) {
+            if (chessField != this) {
                 chessField.setPossibleMove(false);
             }
         }
     }
 
-    private void select(){
+    private void select() {
         this.isSelected = true;
     }
 
-    private void deselect(){
+    private void deselect() {
         this.isSelected = false;
     }
 
-    private int[] getPos(){
+    public int[] getPos() {
         return new int[]{this.posX.x, this.posY};
     }
 
@@ -206,5 +191,10 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
         s.defaultReadObject();
         this.color = new Color(s.readFloat(), s.readFloat(), s.readFloat(), s.readFloat());
         this.originalColor = new Color(s.readFloat(), s.readFloat(), s.readFloat(), s.readFloat());
+    }
+
+    public ChessField getChessField(List<ChessField> chessFields, int row, int column) {
+        if (row < 0 || row >= ChessBoard.fieldsAmountY || column <= 0 || column > ChessBoard.fieldsAmountX) return null;
+        return chessFields.get(row * ChessBoard.fieldsAmountX + column - 1);
     }
 }

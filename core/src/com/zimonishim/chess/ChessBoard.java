@@ -71,19 +71,28 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
     }
     
     private void fillRowWithSpecialPieces(int row, Players player){
-        getChessField(ChessFieldLetter.A, row).setChessPiece(new Rook(player));
-        getChessField(ChessFieldLetter.B, row).setChessPiece(new Knight(player));
-        getChessField(ChessFieldLetter.C, row).setChessPiece(new Bishop(player));
-        getChessField(ChessFieldLetter.D, row).setChessPiece(new Queen(player));
-        getChessField(ChessFieldLetter.E, row).setChessPiece(new King(player));
-        getChessField(ChessFieldLetter.F, row).setChessPiece(new Bishop(player));
-        getChessField(ChessFieldLetter.G, row).setChessPiece(new Knight(player));
-        getChessField(ChessFieldLetter.H, row).setChessPiece(new Rook(player));
+        ChessField a = getChessField(ChessFieldLetter.A, row);
+        a.setChessPiece(new Rook(a, this, player));
+        ChessField b = getChessField(ChessFieldLetter.B, row);
+        b.setChessPiece(new Knight(b, this, player));
+        ChessField c = getChessField(ChessFieldLetter.C, row);
+        c.setChessPiece(new Bishop(c, this, player));
+        ChessField d = getChessField(ChessFieldLetter.D, row);
+        d.setChessPiece(new Queen(d, this, player));
+        ChessField e = getChessField(ChessFieldLetter.E, row);
+        e.setChessPiece(new King(e, this, player));
+        ChessField f = getChessField(ChessFieldLetter.F, row);
+        f.setChessPiece(new Bishop(f, this, player));
+        ChessField g = getChessField(ChessFieldLetter.G, row);
+        g.setChessPiece(new Knight(g, this, player));
+        ChessField h = getChessField(ChessFieldLetter.H, row);
+        h.setChessPiece(new Rook(h, this, player));
     }
 
     private void fillRowWithPawns(int row, Players player){
         for (ChessFieldLetter letter : ChessFieldLetter.values()){
-            getChessField(letter, row).setChessPiece(new Pawn(player));
+            ChessField p = getChessField(letter, row);
+            p.setChessPiece(new Pawn(p, this, player));
         }
     }
 
