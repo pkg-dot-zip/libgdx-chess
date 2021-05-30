@@ -35,11 +35,13 @@ public class Pawn extends ChessPiece {
         int x = chessField.getPos()[0];
         int y = chessField.getPos()[1];
 
+        boolean canMoveTwo = true;
+
         if (player == Players.WHITE) {
             ChessField oneUp = chessField.getChessField(chessFields, y + 1, x);
             if ((oneUp != null && oneUp.getChessPiece() == null)) {
                 set.add(new int[]{0, 1});
-            }
+            } else canMoveTwo = false;
             // diagonal hitting of other player pieces
             ChessField left = chessField.getChessField(chessFields, y + 1, x - 1);
             if ((left != null && left.getChessPiece() != null && left.getChessPiece().getPlayer() != player)) {
@@ -53,7 +55,7 @@ public class Pawn extends ChessPiece {
             ChessField oneDown = chessField.getChessField(chessFields, y - 1, x);
             if ((oneDown != null && oneDown.getChessPiece() == null)) {
                 set.add(new int[]{0, -1});
-            }
+            } else canMoveTwo = false;
             // diagonal hitting of other player pieces
             ChessField left = chessField.getChessField(chessFields, y + 1, x - 1);
             if ((left != null && left.getChessPiece() != null && left.getChessPiece().getPlayer() != player)) {
@@ -65,7 +67,7 @@ public class Pawn extends ChessPiece {
             }
         }
 
-        if (isFirstMove){
+        if (isFirstMove && canMoveTwo){
             if (player == Players.WHITE) {
                 ChessField twoUp = chessField.getChessField(chessFields, y + 2, x);
                 if ((twoUp != null && twoUp.getChessPiece() == null)) {

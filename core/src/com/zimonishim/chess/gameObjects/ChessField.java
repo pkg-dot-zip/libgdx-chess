@@ -87,18 +87,36 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
             return;
         }
 
-        resetPossibleMoves(chessBoardCallback);             //Reset selection & possible moves.
-        setAllMoves(chessBoardCallback, clickedOnField);    //Set all moves.
-        movePiece(chessBoardCallback, clientCallback);      //Move the piece.
-        setSelection(chessBoardCallback);                   //Update selection.
+        if (this.isPossibleMove) {
+            // check if a previously selected piece can move to this field
+            boolean canMove = false;
+            for (ChessField chessField : chessBoardCallback.getChessFields()) {
+                if (chessField.isSelected && chessField.getChessPiece() != null && chessField.getChessPiece().getPlayer() == chessBoardCallback.getTurn())
+                    canMove = true;
+            }
+
+            if (canMove) {
+                resetPossibleMoves(chessBoardCallback);
+                movePiece(chessBoardCallback);
+                resetSelection(chessBoardCallback);
+                sendNetworkData(chessBoardCallback, clientCallback);
+            }
+        } else if (this.getChessPiece() == null || (this.chessPiece != null && this.chessPiece.getPlayer() == chessBoardCallback.getTurn())) {
+            resetPossibleMoves(chessBoardCallback);             //Reset selection & possible moves.
+            setAllMoves(chessBoardCallback, clickedOnField);    //Set all moves.
+            setSelection(chessBoardCallback);                   //Update selection.
+        }
     }
 
-    private void movePiece(IChessBoardCallback chessBoardCallback, IClientCallback clientCallback) {
-        if (this.chessPiece == null && this.isPossibleMove) {
+    private void movePiece(IChessBoardCallback chessBoardCallback) {
+        if (this.isPossibleMove) {
             movePieceOnBoard(chessBoardCallback);
-            clientCallback.getClient().sendChessFields(chessBoardCallback);
             SoundHandler.playSound(FilePathHandler.chessPieceMoveSoundPath);
         }
+    }
+
+    private void sendNetworkData(IChessBoardCallback chessBoardCallback, IClientCallback clientCallback) {
+        clientCallback.getClient().sendChessFields(chessBoardCallback);
     }
 
     private void movePieceOnBoard(IChessBoardCallback chessBoardCallback) {
@@ -106,6 +124,7 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
             if (chessField.isSelected) {
                 ChessPiece pieceToMove = chessField.getChessPiece();
                 chessField.setChessPiece(null);
+                if (this.chessPiece != null) this.chessPiece.setChessField(null);
                 this.setChessPiece(pieceToMove);
                 pieceToMove.setChessField(this);
                 //This means we moved! So let's move it, and then change turns.
@@ -126,7 +145,14 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
                 chessField.deselect();
             }
 
-            select();
+            if (this.chessPiece != null && this.chessPiece.getPlayer() == chessBoardCallback.getTurn()) select();
+        }
+    }
+
+    private void resetSelection(IChessBoardCallback chessBoardCallback) {
+        resetPossibleMoves(chessBoardCallback);
+        for (ChessField chessField : chessBoardCallback.getChessFields()) {
+            chessField.deselect();
         }
     }
 

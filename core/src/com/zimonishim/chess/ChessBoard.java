@@ -115,15 +115,6 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
             //Check whether the mouse was pressed on a field.
             for (ChessField clickedOnField : this.chessFields){
                 if (clickedOnField.contains(drawCallback.getMouseX(), drawCallback.getMouseY())){
-                    //Just stop doing everything if we press a piece that is NOT the color of turn.
-                    if (clickedOnField.getChessPiece() != null){
-
-                        if (clickedOnField.getChessPiece().getPlayer() != this.turn){
-                            //TODO: Fix selection. It now stays blue, despite the turn being ended.
-                            return;
-                        }
-                    }
-
                     //Delegate action to method in field's class.
                     clickedOnField.onClick(this, this.clientCallback, clickedOnField);
                 }
