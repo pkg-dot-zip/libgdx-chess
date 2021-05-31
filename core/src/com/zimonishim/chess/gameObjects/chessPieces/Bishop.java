@@ -5,11 +5,11 @@ import com.zimonishim.chess.IChessBoardCallback;
 import com.zimonishim.chess.Players;
 import com.zimonishim.chess.gameObjects.ChessField;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.zimonishim.chess.util.FilePathHandler.chessPieceTexturesPath;
+import static com.zimonishim.chess.util.FilePathHandler.blackBishop;
+import static com.zimonishim.chess.util.FilePathHandler.whiteBishop;
 
 public class Bishop extends ChessPiece {
     public Bishop(ChessField chessField, IChessBoardCallback chessBoardCallback, Players player) {
@@ -18,11 +18,7 @@ public class Bishop extends ChessPiece {
 
     @Override
     protected String getPlayerTexture(Players player) {
-        if (player == Players.WHITE){
-            return chessPieceTexturesPath + "/white_bishop.png";
-        } else {
-            return chessPieceTexturesPath + "/black_bishop.png";
-        }
+        return (player == Players.WHITE) ? whiteBishop : blackBishop;
     }
 
     @Override

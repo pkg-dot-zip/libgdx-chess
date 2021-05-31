@@ -8,17 +8,17 @@ import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public interface IDrawCallback {
     //Draw stuff.
-    public Batch getBatch();
-    public ShapeDrawer getShapeDrawer();
-    public BitmapFont getFont();
+    Batch getBatch();
+    ShapeDrawer getShapeDrawer();
+    BitmapFont getFont();
 
-    public void drawText(String text, int posX, int posY);
+    void drawText(String text, int posX, int posY);
 
     //Camera.
-    public OrthographicCamera getCamera();
-    public Viewport getViewPort();
+    OrthographicCamera getCamera();
+    Viewport getViewPort();
 
     //Mouse pos.
-    public int getMouseX();
-    public int getMouseY();
+    int getMouseX();
+    int getMouseY();
 }

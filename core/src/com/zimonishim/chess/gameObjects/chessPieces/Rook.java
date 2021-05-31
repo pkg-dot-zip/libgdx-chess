@@ -8,7 +8,8 @@ import com.zimonishim.chess.gameObjects.ChessField;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.zimonishim.chess.util.FilePathHandler.chessPieceTexturesPath;
+import static com.zimonishim.chess.util.FilePathHandler.blackRook;
+import static com.zimonishim.chess.util.FilePathHandler.whiteRook;
 
 public class Rook extends ChessPiece {
     public Rook(ChessField chessField, IChessBoardCallback chessBoardCallback, Players player) {
@@ -17,11 +18,7 @@ public class Rook extends ChessPiece {
 
     @Override
     protected String getPlayerTexture(Players player) {
-        if (player == Players.WHITE) {
-            return chessPieceTexturesPath + "/white_rook.png";
-        } else {
-            return chessPieceTexturesPath + "/black_rook.png";
-        }
+        return (player == Players.WHITE) ? whiteRook : blackRook;
     }
 
     @Override

@@ -8,12 +8,9 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
-		//Set screen width.
-//		config.width = GraphicsHandler.WIDTH;
-//		config.height = GraphicsHandler.HEIGHT;
-
-		//Set other configurations.
+//		config.addIcon(); //TODO: Add an icon.
 		config.title = "Chess";
+		config.pauseWhenMinimized = false; //Keeps running the game despite not being shown on the screen.
 
 		new LwjglApplication(new GameHandler(), config);
 	}

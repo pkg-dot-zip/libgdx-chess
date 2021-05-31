@@ -6,26 +6,25 @@ import com.badlogic.gdx.graphics.Texture;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.zimonishim.chess.util.FilePathHandler.chessPieceTexturesPath;
+import static com.zimonishim.chess.util.FilePathHandler.*;
 
 public class TextureHandler {
 
-    private static Map<String, Texture> textures = new HashMap<>();
+    private static final Map<String, Texture> textures = new HashMap<>();
 
     public static void initTextures(){
-        addTexture(chessPieceTexturesPath + "/white_bishop.png");
-        addTexture(chessPieceTexturesPath + "/black_bishop.png");
-        addTexture(chessPieceTexturesPath + "/white_king.png");
-        addTexture(chessPieceTexturesPath + "/black_king.png");
-        addTexture( chessPieceTexturesPath + "/white_knight.png");
-        addTexture( chessPieceTexturesPath + "/black_knight.png");
-        addTexture(chessPieceTexturesPath + "/white_pawn.png");
-        addTexture(chessPieceTexturesPath + "/black_pawn.png");
-        addTexture(chessPieceTexturesPath + "/white_queen.png");
-        addTexture(chessPieceTexturesPath + "/black_queen.png");
-        addTexture(chessPieceTexturesPath + "/white_rook.png");
-        addTexture(chessPieceTexturesPath + "/black_rook.png");
-
+        addTexture(whiteBishop);
+        addTexture(blackBishop);
+        addTexture(whiteKing);
+        addTexture(blackKing);
+        addTexture(whiteKnight);
+        addTexture(blackKnight);
+        addTexture(whitePawn);
+        addTexture(blackPawn);
+        addTexture(whiteQueen);
+        addTexture(blackQueen);
+        addTexture(whiteRook);
+        addTexture(blackRook);
     }
 
     private static void addTexture(String filePath){

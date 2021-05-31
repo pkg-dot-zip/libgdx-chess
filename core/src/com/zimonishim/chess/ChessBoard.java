@@ -51,13 +51,7 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
                 colorBool = !colorBool;
                 color = (colorBool) ? Color.BROWN : Color.WHITE;
 
-                chessFields.add(new ChessField(
-                        posX,
-                        y,
-                        sizeX,
-                        sizeY,
-                        color
-                ));
+                chessFields.add(new ChessField(posX, y, sizeX, sizeY, color));
             }
         }
 

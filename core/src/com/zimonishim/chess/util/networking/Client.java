@@ -36,7 +36,6 @@ public class Client {
                 player = (objectInputStream.readInt() == 0) ? Players.WHITE : Players.BLACK;
 
                 while (true) {
-                    //TODO: Make List instead of ArrayList.
                     try {
                         List<ChessField> chessFieldArrayList = (ArrayList<ChessField>) objectInputStream.readObject();
                         System.out.println("Received new board state: " + chessFieldArrayList);

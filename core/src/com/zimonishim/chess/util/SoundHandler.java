@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class SoundHandler {
 
-    private static Map<String, Sound> sounds = new HashMap<>();
+    private static final Map<String, Sound> sounds = new HashMap<>();
 
     public static void initSounds(){
         addSound(FilePathHandler.chessPieceMoveSoundPath);

@@ -4,11 +4,11 @@ import com.zimonishim.chess.IChessBoardCallback;
 import com.zimonishim.chess.Players;
 import com.zimonishim.chess.gameObjects.ChessField;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.zimonishim.chess.util.FilePathHandler.chessPieceTexturesPath;
+import static com.zimonishim.chess.util.FilePathHandler.blackKnight;
+import static com.zimonishim.chess.util.FilePathHandler.whiteKnight;
 
 public class Knight extends ChessPiece {
     public Knight(ChessField chessField, IChessBoardCallback chessBoardCallback, Players player) {
@@ -17,11 +17,7 @@ public class Knight extends ChessPiece {
 
     @Override
     protected String getPlayerTexture(Players player) {
-        if (player == Players.WHITE) {
-            return chessPieceTexturesPath + "/white_knight.png";
-        } else {
-            return chessPieceTexturesPath + "/black_knight.png";
-        }
+        return (player == Players.WHITE) ? whiteKnight : blackKnight;
     }
 
     @Override

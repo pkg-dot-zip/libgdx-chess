@@ -7,7 +7,6 @@ import com.zimonishim.chess.gameObjects.ChessField;
 import com.zimonishim.chess.util.TextureHandler;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -27,10 +26,6 @@ public abstract class ChessPiece implements Serializable {
 
     protected abstract String getPlayerTexture(Players player);
 
-    //TODO: Disallow jumping over pieces (except for the knights).
-    public boolean isMoveAllowed(){
-        return false;
-    }
     public abstract Set<int[]> getPossibleMoves();
 
     public Texture getTexture() {

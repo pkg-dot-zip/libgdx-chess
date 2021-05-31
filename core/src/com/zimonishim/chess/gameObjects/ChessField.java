@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -60,7 +59,12 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
                 color = Color.CYAN;
             }
         } else if (isPossibleMove) {
-            color = Color.YELLOW;
+            if (this.getChessPiece() == null){
+                color = Color.YELLOW;
+            } else if (false){
+                color = Color.RED;
+                //TODO: If the piece is from the other player, color it red. We have a getChessPiece method in the ChessBoardCallback for this.
+            }
         }
     }
 
@@ -74,21 +78,16 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
         }
 
         //Draw the chessPiece ONLY, so without the field.
-        drawCallback.getBatch().draw(
-                this.chessPiece.getTexture(),
-                this.x,
-                this.y
-        );
+        drawCallback.getBatch().draw(this.chessPiece.getTexture(), this.x, this.y);
     }
 
-    //TODO: Whenever there is a chessPiece of the opponent here, check if we can attack that piece.
-    public void onClick(IChessBoardCallback chessBoardCallback, IClientCallback clientCallback, ChessField clickedOnField) { //TODO: Isn't clickedOnField always this?! Change this!
+    public void onClick(IChessBoardCallback chessBoardCallback, IClientCallback clientCallback, ChessField clickedOnField) {
         if (clientCallback.getPlayer() != chessBoardCallback.getTurn()) {
             return;
         }
 
         if (this.isPossibleMove) {
-            // check if a previously selected piece can move to this field
+            //Check if a previously selected piece can move to this field.
             boolean canMove = false;
             for (ChessField chessField : chessBoardCallback.getChessFields()) {
                 if (chessField.isSelected && chessField.getChessPiece() != null && chessField.getChessPiece().getPlayer() == chessBoardCallback.getTurn())

@@ -9,8 +9,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.zimonishim.chess.util.networking.ChatLogHandler;
 import com.zimonishim.chess.util.GraphicsHandler;
 import com.zimonishim.chess.util.SoundHandler;
 import space.earlygrey.shapedrawer.ShapeDrawer;
@@ -38,17 +39,20 @@ public class GameHandler extends Game implements IDrawCallback {
 
         //Camera
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        this.viewport = new StretchViewport(camera.viewportWidth, camera.viewportHeight, camera); //TODO: Make it look better.
+        this.viewport = new ScreenViewport(camera);
 
         this.batch = new SpriteBatch();
 
         this.font = new BitmapFont(); //Arial font and black color.
         this.font.setColor(Color.BLACK);
 
-        this.shapeDrawer = new ShapeDrawer(getBatch(), GraphicsHandler.getEmptyTextureRegion()); //Empty texture region is initialised in GraphicsHandler.
+        this.shapeDrawer = new ShapeDrawer(getBatch(), GraphicsHandler.getEmptyTextureRegion());
 
         //Open the mainMenu.
         this.setScreen(new MainMenuScreen(this));
+
+        //Create chatMessages for debugging purposes.
+        ChatLogHandler.debugChatTest();
     }
 
     @Override
@@ -58,7 +62,6 @@ public class GameHandler extends Game implements IDrawCallback {
         //Camera.
         this.camera.update();
 
-        //TODO: Remove if we stop using this.
         //Calculate mouse position in world space.
         mouseInWorld3D.x = Gdx.input.getX();
         mouseInWorld3D.y = Gdx.input.getY();
@@ -70,6 +73,8 @@ public class GameHandler extends Game implements IDrawCallback {
 
     @Override
     public void dispose() {
+        ChatLogHandler.printChatLog();  //Print ChatLog before disposing resources.
+
         this.batch.dispose();           //Dispose Textures.
         GraphicsHandler.dispose();      //Dispose Textures.
         this.font.dispose();            //Dispose Text.

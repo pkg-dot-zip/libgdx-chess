@@ -4,11 +4,11 @@ import com.zimonishim.chess.IChessBoardCallback;
 import com.zimonishim.chess.Players;
 import com.zimonishim.chess.gameObjects.ChessField;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.zimonishim.chess.util.FilePathHandler.chessPieceTexturesPath;
+import static com.zimonishim.chess.util.FilePathHandler.*;
+import static com.zimonishim.chess.util.FilePathHandler.blackBishop;
 
 public class King extends ChessPiece {
     public King(ChessField chessField, IChessBoardCallback chessBoardCallback, Players player) {
@@ -17,14 +17,9 @@ public class King extends ChessPiece {
 
     @Override
     protected String getPlayerTexture(Players player) {
-        if (player == Players.WHITE) {
-            return chessPieceTexturesPath + "/white_king.png";
-        } else {
-            return chessPieceTexturesPath + "/black_king.png";
-        }
+        return (player == Players.WHITE) ? whiteKing : blackKing;
     }
 
-    //TODO: Don't allow moving there if another piece is there. We can use isMoveAllowed for that.
     @Override
     public Set<int[]> getPossibleMoves() {
         Set<int[]> set = new HashSet<>();

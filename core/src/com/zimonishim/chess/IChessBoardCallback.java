@@ -8,12 +8,12 @@ import java.util.List;
 public interface IChessBoardCallback {
 
 
-    public ChessField getChessField(ChessFieldLetter letter, int number);
-    public ChessPiece getChessPiece(ChessFieldLetter letter, int number);
+    ChessField getChessField(ChessFieldLetter letter, int number);
+    ChessPiece getChessPiece(ChessFieldLetter letter, int number);
 
-    public List<ChessField> getChessFields();
-    public void setChessFields(List<ChessField> chessFields);
+    List<ChessField> getChessFields();
+    void setChessFields(List<ChessField> chessFields);
 
-    public Players getTurn();
-    public void switchTurn();
+    Players getTurn();
+    void switchTurn();
 }

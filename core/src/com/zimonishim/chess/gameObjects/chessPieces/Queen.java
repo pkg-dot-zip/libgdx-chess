@@ -8,7 +8,8 @@ import com.zimonishim.chess.gameObjects.ChessField;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.zimonishim.chess.util.FilePathHandler.chessPieceTexturesPath;
+import static com.zimonishim.chess.util.FilePathHandler.blackQueen;
+import static com.zimonishim.chess.util.FilePathHandler.whiteQueen;
 
 public class Queen extends ChessPiece {
     public Queen(ChessField chessField, IChessBoardCallback chessBoardCallback, Players player) {
@@ -17,18 +18,14 @@ public class Queen extends ChessPiece {
 
     @Override
     protected String getPlayerTexture(Players player) {
-        if (player == Players.WHITE){
-            return chessPieceTexturesPath + "/white_queen.png";
-        } else {
-            return chessPieceTexturesPath + "/black_queen.png";
-        }
+        return (player == Players.WHITE) ? whiteQueen : blackQueen;
     }
 
     @Override
     public Set<int[]> getPossibleMoves() {
         Set<int[]> set = new HashSet<>();
 
-        // diagonal movement
+        //Diagonal movement.
         boolean allowTopLeft = true;
         boolean allowTopRight = true;
         boolean allowBottomLeft = true;
@@ -79,7 +76,7 @@ public class Queen extends ChessPiece {
             }
         }
 
-        // horizontal and vertical movement
+        //Horizontal and vertical movement.
         boolean allowTop = true;
         boolean allowRight = true;
         boolean allowBottom = true;

@@ -4,12 +4,11 @@ import com.zimonishim.chess.IChessBoardCallback;
 import com.zimonishim.chess.Players;
 import com.zimonishim.chess.gameObjects.ChessField;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.zimonishim.chess.util.FilePathHandler.chessPieceTexturesPath;
+import static com.zimonishim.chess.util.FilePathHandler.blackPawn;
+import static com.zimonishim.chess.util.FilePathHandler.whitePawn;
 
 public class Pawn extends ChessPiece {
 
@@ -21,11 +20,7 @@ public class Pawn extends ChessPiece {
 
     @Override
     protected String getPlayerTexture(Players player) {
-        if (player == Players.WHITE){
-            return chessPieceTexturesPath + "/white_pawn.png";
-        } else {
-            return chessPieceTexturesPath + "/black_pawn.png";
-        }
+        return (player == Players.WHITE) ? whitePawn : blackPawn;
     }
 
     @Override
@@ -56,7 +51,7 @@ public class Pawn extends ChessPiece {
             if ((oneDown != null && oneDown.getChessPiece() == null)) {
                 set.add(new int[]{0, -1});
             } else canMoveTwo = false;
-            // diagonal hitting of other player pieces
+            //Diagonal hitting of other player pieces.
             ChessField left = chessField.getChessField(chessFields, y + 1, x - 1);
             if ((left != null && left.getChessPiece() != null && left.getChessPiece().getPlayer() != player)) {
                 set.add(new int[]{-1, -1});
