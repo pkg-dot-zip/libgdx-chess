@@ -22,8 +22,8 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
     public static final int fieldsAmountY = 8;
 
     //Individual fields graphical properties.
-    public static final int sizeX = 20;
-    public static final int sizeY = 20;
+    public static final int sizeX = 40;
+    public static final int sizeY = 40;
 
     private List<ChessField> chessFields = new ArrayList<>(64); //Initial capacity should be the max amount of fields.
 

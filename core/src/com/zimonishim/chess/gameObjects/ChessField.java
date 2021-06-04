@@ -78,7 +78,7 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
         }
 
         //Draw the chessPiece ONLY, so without the field.
-        drawCallback.getBatch().draw(this.chessPiece.getTexture(), this.x, this.y);
+        drawCallback.getBatch().draw(this.chessPiece.getTexture(), this.x, this.y, this.chessPiece.getTexture().getWidth() * 2f, this.chessPiece.getTexture().getHeight() * 2f);
     }
 
     public void onClick(IChessBoardCallback chessBoardCallback, IClientCallback clientCallback, ChessField clickedOnField) {

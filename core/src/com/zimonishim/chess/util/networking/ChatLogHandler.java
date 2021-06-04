@@ -16,7 +16,7 @@ public class ChatLogHandler {
 
     public static void sendMessage(Players player, String message){
         chatMessages.add(
-                LocalDateTime.now().toString() +
+                LocalDateTime.now().toLocalTime().toString() +
                 " " + player.name() +
                 ": " + message
         );

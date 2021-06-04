@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -19,9 +20,9 @@ public class MainMenuScreen implements Screen {
 
     private final Stage stage = new Stage(new ScreenViewport());
     private final Table table = new Table();
-    private final TextButton play = new TextButton("Play", skin);
-    private final TextButton credits = new TextButton("Credits", skin);
-    private final TextButton exit = new TextButton("Exit", skin);
+    private final Button play = new TextButton("Play", skin);
+    private final Button credits = new TextButton("Credits", skin);
+    private final Button exit = new TextButton("Exit", skin);
 
     public MainMenuScreen(final GameHandler gameHandler) {
         this.gameHandler = gameHandler;
@@ -33,7 +34,6 @@ public class MainMenuScreen implements Screen {
 
     private void setup(){
         table.setFillParent(true);
-//        table.setDebug(true);
         stage.addActor(table);
 
         table.add(play).fillX().uniformX();
