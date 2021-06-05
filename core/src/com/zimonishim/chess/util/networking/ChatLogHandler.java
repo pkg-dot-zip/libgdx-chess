@@ -15,6 +15,10 @@ public class ChatLogHandler {
     public static List<String> chatMessages = new ArrayList<>();
 
     public static void sendMessage(Players player, String message){
+        if (player == null){
+            return;
+        }
+
         chatMessages.add(
                 LocalDateTime.now().toLocalTime().toString() +
                 " " + player.name() +
