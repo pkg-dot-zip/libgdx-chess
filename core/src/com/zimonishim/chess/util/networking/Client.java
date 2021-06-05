@@ -23,8 +23,10 @@ public class Client {
     private Thread timeoutCheck = new Thread(new TimeoutCheck());
 
     private Players player;
+    private IChessBoardCallback chessBoardCallback;
 
     public Client(IChessBoardCallback chessBoardCallback) {
+        this.chessBoardCallback = chessBoardCallback;
         try {
             socket = new Socket(IP, PORT);
             System.out.println("Initialised socket.");
@@ -47,13 +49,16 @@ public class Client {
 
                             // The list being empty means that the server lost connection with the other client and this client should win.
                             if (chessFieldArrayList.size() == 0) {
-                                // TODO This client should win now.
+                                // This client should win now.
+                                chessBoardCallback.endGame(player);
+                                // TODO Send a message in the chat window for the statement below?
                                 System.out.println("Other client disconnected. YOU WON!");
                                 stopConnectionCheck();
                                 break;
 
                             } else {
                                 chessBoardCallback.setChessFields(chessFieldArrayList);
+                                chessBoardCallback.checkGameState();
                                 chessBoardCallback.switchTurn();
                             }
                         } else {
@@ -185,6 +190,7 @@ public class Client {
     public void callDraw() {
         // Close the socket, networking is no longer needed.
         System.out.println("Lost connection with the server. IT'S A DRAW!");
+        chessBoardCallback.callDraw();
         try {
             socket.close();
         } catch (IOException e) {

@@ -107,7 +107,7 @@ public class Server {
 
             chatThread(dataOutputStream1, dataInputStream2).start();
             chatThread(dataOutputStream2, dataInputStream1).start();
-            
+
         } catch (IOException e) {
             e.printStackTrace();
         }

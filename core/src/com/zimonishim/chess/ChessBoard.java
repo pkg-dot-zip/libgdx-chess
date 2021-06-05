@@ -17,6 +17,9 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
     private final IClientCallback clientCallback;
     private Players turn = Players.WHITE; //In chess WHITE always starts.
 
+    private GameState gameState = GameState.RUNNING;
+    private Players winner = null;
+
     //ChessBoard graphical properties.
     public static final int fieldsAmountX = 8;
     public static final int fieldsAmountY = 8;
@@ -145,5 +148,54 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
     @Override
     public void switchTurn() {
         this.turn = (this.turn == Players.WHITE) ? Players.BLACK : Players.WHITE;
+    }
+
+    @Override
+    public void checkGameState() {
+        boolean hasBlackKing = false;
+        boolean hasWhiteKing = false;
+        for (ChessField chessField : chessFields) {
+            if (chessField.getChessPiece() != null && chessField.getChessPiece().getClass().equals(King.class)) {
+                if (chessField.getChessPiece().getPlayer() == Players.WHITE) hasWhiteKing = true;
+                else hasBlackKing = true;
+            }
+        }
+        if (!hasBlackKing && !hasWhiteKing) {
+            callDraw();
+        } else if (!hasBlackKing) endGame(Players.WHITE);
+        else if (!hasWhiteKing) endGame(Players.BLACK);
+    }
+
+    //TODO After winning the game the other player sees the possible moves of the last selected piece, this should not happen.
+    @Override
+    public void endGame(Players winner) {
+        gameEndBoardClean();
+        this.gameState = GameState.OVER;
+        this.winner = winner;
+    }
+
+    @Override
+    public void callDraw() {
+        gameEndBoardClean();
+        this.gameState = GameState.DRAW;
+    }
+
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    public Players getWinner() {
+        return winner;
+    }
+
+    /**
+     * Reset all colors and selections
+     */
+    public void gameEndBoardClean() {
+        for (ChessField chessField : chessFields) {
+            chessField.deselect();
+            chessField.setPossibleMove(false);
+            chessField.setColor(chessField.getOriginalColor());
+        }
     }
 }

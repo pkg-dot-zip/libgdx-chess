@@ -16,4 +16,7 @@ public interface IChessBoardCallback {
 
     Players getTurn();
     void switchTurn();
+    void checkGameState();
+    void endGame(Players winner);
+    void callDraw();
 }

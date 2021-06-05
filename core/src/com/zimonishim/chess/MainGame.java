@@ -86,7 +86,7 @@ public class MainGame implements Screen, IClientCallback {
 	}
 
 	private void update(){
-		this.chessBoard.update();
+		if (chessBoard.getGameState() == GameState.RUNNING) this.chessBoard.update();
 		messagesList.setItems(ChatLogHandler.chatMessages.toArray(new String[0]));
 	}
 
@@ -96,7 +96,13 @@ public class MainGame implements Screen, IClientCallback {
 	}
 
 	private void drawUI(){
-		turnLabel.setText("Turn: " + this.chessBoard.getTurn().name());
+		if (chessBoard.getGameState() == GameState.RUNNING) {
+			turnLabel.setText("Turn: " + this.chessBoard.getTurn().name());
+		} else if (chessBoard.getGameState() == GameState.OVER){
+			turnLabel.setText("Game over! Winner is: " + chessBoard.getWinner());
+		} else {
+			turnLabel.setText("Game over! Draw!");
+		}
 		playerLabel.setText("You are " + getPlayer());
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 		stage.draw();

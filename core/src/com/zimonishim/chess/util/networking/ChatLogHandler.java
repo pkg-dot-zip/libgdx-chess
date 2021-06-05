@@ -44,6 +44,7 @@ public class ChatLogHandler {
         } catch (IOException e){
             e.printStackTrace();
         }
+        System.out.println("Printed chat log");
     }
 
     public static void debugChatTest(){

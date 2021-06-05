@@ -99,6 +99,8 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
                 movePiece(chessBoardCallback);
                 resetSelection(chessBoardCallback);
                 sendNetworkData(chessBoardCallback, clientCallback);
+
+                chessBoardCallback.checkGameState();
             }
         } else if (this.getChessPiece() == null || (this.chessPiece != null && this.chessPiece.getPlayer() == chessBoardCallback.getTurn())) {
             resetPossibleMoves(chessBoardCallback);             //Reset selection & possible moves.
@@ -188,7 +190,7 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
         this.isSelected = true;
     }
 
-    private void deselect() {
+    public void deselect() {
         this.isSelected = false;
     }
 
@@ -196,7 +198,7 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
         return new int[]{this.posX.x, this.posY};
     }
 
-    private void setPossibleMove(boolean possibleMove) {
+    public void setPossibleMove(boolean possibleMove) {
         this.isPossibleMove = possibleMove;
     }
 
@@ -221,5 +223,13 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
     public ChessField getChessField(List<ChessField> chessFields, int row, int column) {
         if (row < 0 || row >= ChessBoard.fieldsAmountY || column <= 0 || column > ChessBoard.fieldsAmountX) return null;
         return chessFields.get(row * ChessBoard.fieldsAmountX + column - 1);
+    }
+
+    public Color getOriginalColor() {
+        return originalColor;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 }
