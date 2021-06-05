@@ -6,6 +6,7 @@ public interface IGameObject {
      * Contains code related to values on the screen. Should be called every frame.
      */
     void update();
+    void update(IChessBoardCallback chessBoardCallback);
 
     /**
      * Contains code directly related to drawing graphics on the screen. Should be called every frame.

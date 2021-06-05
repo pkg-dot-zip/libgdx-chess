@@ -119,8 +119,14 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
         }
 
         for (ChessField chessField : this.chessFields) {
-            chessField.update();
+            chessField.update(this);
         }
+    }
+
+    @Override
+    public void update(IChessBoardCallback chessBoardCallback) {
+        // This should not be used, Chessboard should use the other update method.
+        System.out.println("Chessboard used the wrong update method");
     }
 
     @Override

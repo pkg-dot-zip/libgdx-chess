@@ -49,6 +49,12 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
 
     @Override
     public void update() {
+        // This should not be called on. Chessfield should use the other update method instead.
+        System.out.println("Wrong update call in chessfield");
+    }
+
+    @Override
+    public void update(IChessBoardCallback chessBoardCallback) {
         //TODO: Once our software is done, and we notice we don't need to call this as often we NEED to optimize this by not doing so.
         //The reason we can consider this is because we only update variables when pressing the mouse,
         // so this could be once then and ONLY if then.
@@ -61,7 +67,7 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
         } else if (isPossibleMove) {
             if (this.getChessPiece() == null){
                 color = Color.YELLOW;
-            } else if (false){
+            } else if (this.chessPiece.getPlayer() != chessBoardCallback.getTurn()){
                 color = Color.RED;
                 //TODO: If the piece is from the other player, color it red. We have a getChessPiece method in the ChessBoardCallback for this.
             }
