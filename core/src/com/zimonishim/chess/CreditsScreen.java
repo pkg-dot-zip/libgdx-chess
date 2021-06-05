@@ -5,26 +5,25 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class MainMenuScreen implements Screen {
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class CreditsScreen implements Screen {
 
     private final GameHandler gameHandler;
 
     private final Skin skin = new Skin(Gdx.files.internal("skin/uiskin.json")); //We keep this here since we only use Scene2D in the mainMenu.
 
     private final Stage stage = new Stage(new ScreenViewport());
-    private final Table table = new Table();
-    private final Button play = new TextButton("Play", skin);
-    private final Button credits = new TextButton("Credits", skin);
-    private final Button exit = new TextButton("Exit", skin);
+    private final VerticalGroup verticalGroup = new VerticalGroup();
+    private final TextArea creditsText = new TextArea("", skin);
+    private final Button backToMainMenu = new TextButton("Back to Main Menu", skin);
 
-    public MainMenuScreen(final GameHandler gameHandler) {
+    public CreditsScreen(final GameHandler gameHandler) {
         this.gameHandler = gameHandler;
         Gdx.input.setInputProcessor(stage);
 
@@ -33,38 +32,38 @@ public class MainMenuScreen implements Screen {
     }
 
     private void setup() {
-        table.setFillParent(true);
-        stage.addActor(table);
+        Scanner sc;
+        try {
+            sc = new Scanner(Gdx.files.internal("text/credits.txt").file());
+            StringBuilder s = new StringBuilder();
+            while(sc.hasNextLine()){
+                s.append(sc.nextLine()).append("\n");
+            }
+            creditsText.setText(s.toString());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
-        table.add(play).fillX().uniformX();
-        table.row().pad(10, 0, 10, 0);
-        table.add(credits).fillX().uniformX();
-        table.row();
-        table.add(exit).fillX().uniformX();
+        creditsText.setDisabled(true);
+
+        verticalGroup.setSize(800, 800);
+        stage.addActor(verticalGroup);
+
+        creditsText.setFillParent(true);
+
+        verticalGroup.addActor(creditsText);
+        verticalGroup.addActor(backToMainMenu);
+
+        verticalGroup.pad(10);
+        verticalGroup.left().bottom();
     }
 
     private void actionHandlingSetup() {
-        play.addListener(new ChangeListener() {
+        backToMainMenu.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                ((TextButton) actor).setText("Loading...");
-                gameHandler.setScreen(new MainGame(gameHandler));
+                gameHandler.setScreen(new MainMenuScreen(gameHandler));
                 dispose();
-            }
-        });
-
-        credits.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                gameHandler.setScreen(new CreditsScreen(gameHandler));
-                dispose();
-            }
-        });
-
-        exit.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                Gdx.app.exit();
             }
         });
     }
@@ -75,7 +74,7 @@ public class MainMenuScreen implements Screen {
     }
 
     @Override
-    public void render(float delta) {
+    public void render(float v) {
         draw();
     }
 

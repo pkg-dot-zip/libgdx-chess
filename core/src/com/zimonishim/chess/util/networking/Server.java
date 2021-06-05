@@ -42,49 +42,10 @@ public class Server {
                     DataInputStream dataInputStream2 = new DataInputStream(socketChat2.getInputStream());
                     System.out.println("Initialised input and output streams for UTF.");
 
-                    new Thread(() -> {
-                        while (true) {
-                            try {
-                                objectOutputStream1.writeObject(objectInputStream2.readObject());
-                                System.out.println("Sent object from socket 2 to 1.");
-                            } catch (ClassNotFoundException | IOException classNotFoundException) {
-                                classNotFoundException.printStackTrace();
-                            }
-                        }
-                    }).start();
-
-                    new Thread(() -> {
-                        while (true) {
-                            try {
-                                dataOutputStream1.writeUTF(dataInputStream2.readUTF());
-                                System.out.println("Sent object from socket 2 to 1.");
-                            } catch (IOException classNotFoundException) {
-                                classNotFoundException.printStackTrace();
-                            }
-                        }
-                    }).start();
-
-                    new Thread(() -> {
-                        while (true) {
-                            try {
-                                objectOutputStream2.writeObject(objectInputStream1.readObject());
-                                System.out.println("Sent object from socket 1 to 2.");
-                            } catch (ClassNotFoundException | IOException classNotFoundException) {
-                                classNotFoundException.printStackTrace();
-                            }
-                        }
-                    }).start();
-
-                    new Thread(() -> {
-                        while (true) {
-                            try {
-                                dataOutputStream2.writeUTF(dataInputStream1.readUTF());
-                                System.out.println("Sent UTF from socket 1 to 2.");
-                            } catch (IOException classNotFoundException) {
-                                classNotFoundException.printStackTrace();
-                            }
-                        }
-                    }).start();
+                    gameThread(objectOutputStream1, objectInputStream2).start();
+                    chatThread(dataOutputStream1, dataInputStream2).start();
+                    gameThread(objectOutputStream2, objectInputStream1).start();
+                    chatThread(dataOutputStream2, dataInputStream1).start();
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -95,5 +56,31 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static Thread gameThread(ObjectOutputStream outputStream, ObjectInputStream inputStream){
+        return new Thread(() -> {
+            while (true) {
+                try {
+                    outputStream.writeObject(inputStream.readObject());
+                    System.out.println("Sent object from socket 1 to 2.");
+                } catch (ClassNotFoundException | IOException classNotFoundException) {
+                    classNotFoundException.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private static Thread chatThread(DataOutputStream outputStream, DataInputStream inputStream){
+        return new Thread(() -> {
+            while (true) {
+                try {
+                    outputStream.writeUTF(inputStream.readUTF());
+                    System.out.println("Sent UTF from socket A to socket B.");
+                } catch (IOException classNotFoundException) {
+                    classNotFoundException.printStackTrace();
+                }
+            }
+        });
     }
 }

@@ -79,7 +79,6 @@ public class MainGame implements Screen, IClientCallback {
 					return;
 				}
 
-//				ChatLogHandler.sendMessage(chessBoard.getTurn(), messageTextField.getText());
 				client.sendChatMessage(getClient().getPlayer(), messageTextField.getText());
 				messageTextField.setText("");
 			}
