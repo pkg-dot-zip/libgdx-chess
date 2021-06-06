@@ -19,4 +19,5 @@ public interface IChessBoardCallback {
     void checkGameState();
     void endGame(Players winner);
     void callDraw();
+    void cleanBoard();
 }

@@ -175,14 +175,14 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
     //TODO After winning the game the other player sees the possible moves of the last selected piece, this should not happen.
     @Override
     public void endGame(Players winner) {
-        gameEndBoardClean();
+        cleanBoard();
         this.gameState = GameState.OVER;
         this.winner = winner;
     }
 
     @Override
     public void callDraw() {
-        gameEndBoardClean();
+        cleanBoard();
         this.gameState = GameState.DRAW;
     }
 
@@ -197,7 +197,8 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
     /**
      * Reset all colors and selections
      */
-    public void gameEndBoardClean() {
+    @Override
+    public void cleanBoard() {
         for (ChessField chessField : chessFields) {
             chessField.deselect();
             chessField.setPossibleMove(false);

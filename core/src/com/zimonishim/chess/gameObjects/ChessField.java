@@ -123,6 +123,8 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
     }
 
     private void sendNetworkData(IChessBoardCallback chessBoardCallback, IClientCallback clientCallback) {
+        // Before sending data reset all selections and colours.
+        chessBoardCallback.cleanBoard();
         clientCallback.getClient().sendChessFields(chessBoardCallback);
     }
 

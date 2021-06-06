@@ -186,7 +186,6 @@ public class Client {
         timeoutCheck.stop();
     }
 
-    //TODO Call a draw for after the connection was broken in any way.
     public void callDraw() {
         // Close the socket, networking is no longer needed.
         System.out.println("Lost connection with the server. IT'S A DRAW!");

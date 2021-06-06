@@ -121,6 +121,7 @@ public class Server {
                     System.out.println("Sent UTF from socket A to socket B.");
                 } catch (IOException classNotFoundException) {
                     // socket lost connection so stop trying to relay text
+                    System.out.println("Chat connection broken");
                     break;
                 }
             }

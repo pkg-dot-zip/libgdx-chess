@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
@@ -34,7 +35,7 @@ public class CreditsScreen implements Screen {
     private void setup() {
         Scanner sc;
         try {
-            sc = new Scanner(Gdx.files.internal("text/credits.txt").file());
+            sc = new Scanner(Gdx.files.internal("core/assets/text/credits.txt").file());
             StringBuilder s = new StringBuilder();
             while(sc.hasNextLine()){
                 s.append(sc.nextLine()).append("\n");
