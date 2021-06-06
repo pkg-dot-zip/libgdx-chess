@@ -69,7 +69,6 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
                 color = Color.YELLOW;
             } else if (this.chessPiece.getPlayer() != chessBoardCallback.getTurn()){
                 color = Color.RED;
-                //TODO: If the piece is from the other player, color it red. We have a getChessPiece method in the ChessBoardCallback for this.
             }
         }
     }

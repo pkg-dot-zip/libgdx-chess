@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Client {
-
-    //TODO: Refactor since we also use this in Server.
     public static final String IP = "localhost";
     public static final int PORT = 8000;
 

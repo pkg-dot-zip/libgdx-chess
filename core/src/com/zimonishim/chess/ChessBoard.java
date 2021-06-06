@@ -43,9 +43,9 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
         //Fill fields.
         for (int y = 0; y < fieldsAmountY; ++y){
 
-            colorBool = !colorBool; //Without this we only draw the Y-axis. So we're doing this the wrong around. Right?
+            colorBool = !colorBool;
 
-            for (int x = 0; x < fieldsAmountX; ++x){ //TODO: We're doing this the wrong way around. -> Fix this if so. See comment above.
+            for (int x = 0; x < fieldsAmountX; ++x){ 
 
                 //Deciding the position of the field.
                 ChessFieldLetter posX = ChessFieldLetter.values()[x];
@@ -172,7 +172,6 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
         else if (!hasWhiteKing) endGame(Players.BLACK);
     }
 
-    //TODO After winning the game the other player sees the possible moves of the last selected piece, this should not happen.
     @Override
     public void endGame(Players winner) {
         if (gameState == GameState.RUNNING) {
