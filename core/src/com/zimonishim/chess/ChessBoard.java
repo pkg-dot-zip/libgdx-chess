@@ -175,15 +175,19 @@ public class ChessBoard implements IGameObject, IChessBoardCallback {
     //TODO After winning the game the other player sees the possible moves of the last selected piece, this should not happen.
     @Override
     public void endGame(Players winner) {
-        cleanBoard();
-        this.gameState = GameState.OVER;
-        this.winner = winner;
+        if (gameState == GameState.RUNNING) {
+            cleanBoard();
+            this.gameState = GameState.OVER;
+            this.winner = winner;
+        }
     }
 
     @Override
     public void callDraw() {
-        cleanBoard();
-        this.gameState = GameState.DRAW;
+        if (gameState == GameState.RUNNING) {
+            cleanBoard();
+            this.gameState = GameState.DRAW;
+        }
     }
 
     public GameState getGameState() {
