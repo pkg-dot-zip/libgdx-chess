@@ -52,11 +52,11 @@ public class Pawn extends ChessPiece {
                 set.add(new int[]{0, -1});
             } else canMoveTwo = false;
             //Diagonal hitting of other player pieces.
-            ChessField left = chessField.getChessField(chessFields, y + 1, x - 1);
+            ChessField left = chessField.getChessField(chessFields, y - 1, x - 1);
             if ((left != null && left.getChessPiece() != null && left.getChessPiece().getPlayer() != player)) {
                 set.add(new int[]{-1, -1});
             }
-            ChessField right = chessField.getChessField(chessFields, y + 1, x + 1);
+            ChessField right = chessField.getChessField(chessFields, y - 1, x + 1);
             if ((right != null && right.getChessPiece() != null && right.getChessPiece().getPlayer() != player)) {
                 set.add(new int[]{1, -1});
             }
