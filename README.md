@@ -22,6 +22,7 @@
 
 ## 📝 Table of Contents
 - [About](#about)
+- [Usage](#usage)
 - [Built Using](#built_using)
 - [Authors](#authors)
 
@@ -30,6 +31,22 @@ LibGDX-Chess is a multiplayer chess game made in Java, using LibGDX. This projec
 
 This application writes the entire List of ChessFields as an object and the chat messages as Strings. This is because we needed to use both
 for the assignment, and I recommend real world applications to replace the object with a string in the Forsyth–Edwards Notation (FEN).
+
+## 🎈 Usage <a name="usage"></a>
+Instructions on how to get this project running on your machine:
+
+1. Download the project from the GitHub repository.
+1. Open the project in IntelliJ IDEA.
+1. Open the Gradle tab on the right side of the screen and click on the "Refresh all Gradle projects" button.
+1. Now go to the Server class in the project and run it.
+1. Now open two instance of the game, this is done by:
+    1. Open the Gradle tab on the right of the screen.
+    1. Navigate to libgdx-chess (root) -> Tasks -> other.
+    1. Click on "run".
+    1. Now the application will run, and a build configuration will be added to IntelliJ.
+    1. Go to the build configurations and click on "Edit Configurations".
+    1. Enable "Allow parallel run".
+    1. Run a second instance of the application by clicking on "run" again.
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 - [libGDX](https://libgdx.com/) - Framework
