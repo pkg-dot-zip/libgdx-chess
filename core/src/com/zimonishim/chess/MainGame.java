@@ -20,7 +20,7 @@ public class MainGame implements Screen, IClientCallback {
 	private Client client;
 
 	private Stage stage;
-	private final Skin skin = new Skin(Gdx.files.internal("skin/uiskin.json")); //We keep this here since we only use Scene2D in the mainMenu.
+	private final Skin skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 	private final Table chatTable = new Table(skin);
 	private final HorizontalGroup horizontalGroup = new HorizontalGroup();
 	private final TextField messageTextField = new TextField("", skin);
@@ -75,7 +75,7 @@ public class MainGame implements Screen, IClientCallback {
 		messageSendButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				if (messageTextField.getText().isEmpty()){
+				if (messageTextField.getText().isEmpty()){ //Don't allow sending an empty message.
 					return;
 				}
 

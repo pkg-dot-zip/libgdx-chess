@@ -6,12 +6,12 @@ import com.zimonishim.chess.gameObjects.ChessField;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Client {
-    public static final String IP = "localhost";
-    public static final int PORT = 8000;
+
+    private static final String IP = "localhost";
+    static final int PORT = 8000;
 
     private Socket socket;
     private ObjectOutputStream objectOutputStream;
@@ -39,17 +39,16 @@ public class Client {
             new Thread(() -> {
                 while (true) {
                     try {
-                        List<ChessField> chessFieldArrayList = (ArrayList<ChessField>) objectInputStream.readObject();
+                        List<ChessField> chessFieldArrayList = (List<ChessField>) objectInputStream.readObject();
                         lastPingReceived = System.currentTimeMillis();
-                        // Null list is a client connection ping.
+                        //Null list is a client connection ping.
                         if (chessFieldArrayList != null) {
                             System.out.println("Received new board state: " + chessFieldArrayList);
 
-                            // The list being empty means that the server lost connection with the other client and this client should win.
+                            //The list being empty means that the server lost connection with the other client and this client should win.
                             if (chessFieldArrayList.size() == 0) {
-                                // This client should win now.
+                                //This client should win now.
                                 chessBoardCallback.endGame(player);
-                                // TODO Send a message in the chat window for the statement below?
                                 System.out.println("Other client disconnected. YOU WON!");
                                 stopConnectionCheck();
                                 break;
@@ -60,14 +59,14 @@ public class Client {
                                 chessBoardCallback.switchTurn();
                             }
                         } else {
-                            System.out.println("Received a ping");
+                            System.out.println("Received a ping.");
                         }
 
                     } catch (ClassNotFoundException | IOException exception) {
                         exception.printStackTrace();
 
-                        // If a problem occured in receiving the data then call a draw and stop trying to read new data.
-                        System.out.println("try catch resulting in draw");
+                        //If a problem occurred in receiving the data then call a draw and stop trying to read new data.
+                        System.out.println("Try catch resulting in draw.");
                         callDraw();
                         break;
                     }
@@ -121,9 +120,9 @@ public class Client {
 
     public void sendChessFields(IChessBoardCallback chessBoardCallback) {
         try {
-            System.out.println("Sent new board state: " + chessBoardCallback.getChessFields());
             objectOutputStream.writeObject(chessBoardCallback.getChessFields());
             objectOutputStream.flush();
+            System.out.println("Sent new board state: " + chessBoardCallback.getChessFields());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -132,20 +131,19 @@ public class Client {
     private int pingTimeMs = 5000;
 
     /**
-     * Keep on sending a ping of a blank chessfield so the server and other client know that there's a connection.
+     * Keep on sending a ping of a blank ChessField so the server and other client know that there's a connection.
      */
     private class PingServer implements Runnable {
         @Override
         public void run() {
             long systemTime = System.currentTimeMillis();
             while (true) {
-                // A ping every 5 seconds.
+                //Send a ping every 5 seconds.
                 if (System.currentTimeMillis() - systemTime >= pingTimeMs) {
                     systemTime = System.currentTimeMillis();
-                    System.out.println("Sending a ping");
+                    System.out.println("Sending a ping.");
                     try {
-                        // Null object is the ping.
-                        objectOutputStream.writeObject(null);
+                        objectOutputStream.writeObject(null); //Null object is the ping.
                         objectOutputStream.flush();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -158,15 +156,15 @@ public class Client {
     private long lastPingReceived = System.currentTimeMillis();
 
     /**
-     * Constantly check if the timeout time has been crossed.
+     * Checks constantly if the timeout time has been crossed.
      */
     private class TimeoutCheck implements Runnable {
         @Override
         public void run() {
             while (true) {
                 if (System.currentTimeMillis() - lastPingReceived > 3 * pingTimeMs) {
-                    // Server connection broken, so call a draw.
-                    System.out.println("Timeout resulting in draw");
+                    //Server connection broken, so call a draw.
+                    System.out.println("Timeout resulting in draw.");
                     callDraw();
                 }
 
@@ -179,13 +177,13 @@ public class Client {
         }
     }
 
-    public void stopConnectionCheck() {
+    private void stopConnectionCheck() {
         pingServer.stop();
         timeoutCheck.stop();
     }
 
-    public void callDraw() {
-        // Close the socket, networking is no longer needed.
+    private void callDraw() {
+        //Close the socket, networking is no longer needed.
         System.out.println("Lost connection with the server. IT'S A DRAW!");
         chessBoardCallback.callDraw();
         try {

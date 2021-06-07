@@ -22,6 +22,10 @@ public class GraphicsHandler {
         initTextureRegion();
     }
 
+    /**
+     * Used by the ShapeDrawer to draw shapes without having to worry about resource-management.
+     * @return  textureRegion
+     */
     public static TextureRegion getEmptyTextureRegion(){
         return textureRegion;
     }
@@ -35,6 +39,7 @@ public class GraphicsHandler {
         textureRegion = new TextureRegion(texture, 0, 0, 1, 1);
     }
 
+    /** Called when this application should release all resources. */
     public static void dispose(){
         TextureHandler.dispose();
         texture.dispose();

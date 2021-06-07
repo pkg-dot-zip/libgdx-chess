@@ -2,18 +2,16 @@ package com.zimonishim.chess;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.zimonishim.chess.util.networking.ChatLogHandler;
 import com.zimonishim.chess.util.GraphicsHandler;
 import com.zimonishim.chess.util.SoundHandler;
+import com.zimonishim.chess.util.networking.ChatLogHandler;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 /**
@@ -22,7 +20,6 @@ import space.earlygrey.shapedrawer.ShapeDrawer;
 public class GameHandler extends Game implements IDrawCallback {
 
     private SpriteBatch batch;
-    private BitmapFont font;
     private ShapeDrawer shapeDrawer;
 
     private OrthographicCamera camera;
@@ -37,15 +34,9 @@ public class GameHandler extends Game implements IDrawCallback {
         GraphicsHandler.initGraphics();
         SoundHandler.initSounds();
 
-        //Camera
         this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.viewport = new ScreenViewport(camera);
-
         this.batch = new SpriteBatch();
-
-        this.font = new BitmapFont(); //Arial font and black color.
-        this.font.setColor(Color.BLACK);
-
         this.shapeDrawer = new ShapeDrawer(getBatch(), GraphicsHandler.getEmptyTextureRegion());
 
         //Open the mainMenu.
@@ -58,8 +49,6 @@ public class GameHandler extends Game implements IDrawCallback {
     @Override
     public void render() {
         super.render(); //NOTE: Super important. NEVER remove this.
-
-        //Camera.
         this.camera.update();
 
         //Calculate mouse position in world space.
@@ -77,7 +66,6 @@ public class GameHandler extends Game implements IDrawCallback {
 
         this.batch.dispose();           //Dispose Textures.
         GraphicsHandler.dispose();      //Dispose Textures.
-        this.font.dispose();            //Dispose Text.
         SoundHandler.dispose();         //Dispose Sounds.
     }
 
@@ -89,16 +77,6 @@ public class GameHandler extends Game implements IDrawCallback {
     @Override
     public ShapeDrawer getShapeDrawer() {
         return this.shapeDrawer;
-    }
-
-    @Override
-    public BitmapFont getFont() {
-        return this.font;
-    }
-
-    @Override
-    public void drawText(String text, int posX, int posY) {
-        getFont().draw(getBatch(), text, posX, posY);
     }
 
     @Override

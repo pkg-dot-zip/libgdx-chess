@@ -16,7 +16,7 @@ public class MainMenuScreen implements Screen {
 
     private final GameHandler gameHandler;
 
-    private final Skin skin = new Skin(Gdx.files.internal("skin/uiskin.json")); //We keep this here since we only use Scene2D in the mainMenu.
+    private final Skin skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
     private final Stage stage = new Stage(new ScreenViewport());
     private final Table table = new Table();

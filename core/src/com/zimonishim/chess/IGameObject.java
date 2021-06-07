@@ -4,8 +4,8 @@ public interface IGameObject {
 
     /**
      * Contains code related to values on the screen. Should be called every frame.
+     * @param chessBoardCallback  callback containing the basic methods for updating the ChessBoard
      */
-    void update();
     void update(IChessBoardCallback chessBoardCallback);
 
     /**

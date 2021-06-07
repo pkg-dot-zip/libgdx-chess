@@ -35,6 +35,7 @@ public class TextureHandler {
         return textures.get(filePath);
     }
 
+    /** Called when this application should release all resources. */
     public static void dispose(){
         for (Texture texture : textures.values()){
             texture.dispose();

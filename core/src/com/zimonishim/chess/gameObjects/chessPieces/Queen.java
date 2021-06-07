@@ -12,6 +12,7 @@ import static com.zimonishim.chess.util.FilePathHandler.blackQueen;
 import static com.zimonishim.chess.util.FilePathHandler.whiteQueen;
 
 public class Queen extends ChessPiece {
+
     public Queen(ChessField chessField, IChessBoardCallback chessBoardCallback, Players player) {
         super(chessField, chessBoardCallback, player);
     }

@@ -12,6 +12,7 @@ import static com.zimonishim.chess.util.FilePathHandler.blackRook;
 import static com.zimonishim.chess.util.FilePathHandler.whiteRook;
 
 public class Rook extends ChessPiece {
+
     public Rook(ChessField chessField, IChessBoardCallback chessBoardCallback, Players player) {
         super(chessField, chessBoardCallback, player);
     }

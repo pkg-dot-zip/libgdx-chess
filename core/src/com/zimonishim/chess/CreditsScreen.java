@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
@@ -17,7 +16,7 @@ public class CreditsScreen implements Screen {
 
     private final GameHandler gameHandler;
 
-    private final Skin skin = new Skin(Gdx.files.internal("skin/uiskin.json")); //We keep this here since we only use Scene2D in the mainMenu.
+    private final Skin skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
     private final Stage stage = new Stage(new ScreenViewport());
     private final VerticalGroup verticalGroup = new VerticalGroup();

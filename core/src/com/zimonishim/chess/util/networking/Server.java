@@ -1,17 +1,15 @@
 package com.zimonishim.chess.util.networking;
 
-import java.io.*;
-
 import com.zimonishim.chess.gameObjects.ChessField;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Server {
+
     private static ObjectOutputStream objectOutputStreamGameSocketOne;
     private static ObjectOutputStream objectOutputStreamGameSocketTwo;
 
@@ -30,36 +28,34 @@ public class Server {
             ObjectInputStream objectInputStream2 = new ObjectInputStream(gameSocketTwo.getInputStream());
             System.out.println("Initialised game input and output streams.");
 
-            //TODO: Fix issue. Sometimes it will block here.
-            // (Check if this is still the case after merging.)
-
+            //Here we write the integers representing the player's color (white or black).
             objectOutputStreamGameSocketOne.writeInt(0);
             objectOutputStreamGameSocketOne.flush();
             objectOutputStreamGameSocketTwo.writeInt(1);
             objectOutputStreamGameSocketTwo.flush();
 
-            // Create threads for relaying game data from the clients.
+            //Create threads for relaying game data from the clients.
             new Thread(() -> {
                 while (true) {
-                    ArrayList<ChessField> chessFields;
-                    // Read from socket 2.
+                    List<ChessField> chessFields;
+                    //Read from socket 2.
                     try {
-                        chessFields = (ArrayList<ChessField>) objectInputStream2.readObject();
-                        System.out.println("Read input from socket 2");
+                        chessFields = (List<ChessField>) objectInputStream2.readObject();
+                        System.out.println("Read input from socket 2.");
                     } catch (ClassNotFoundException | IOException classNotFoundException) {
-                        // One of the sockets has been closed.
-                        System.out.println("Connection with socket 2 broken");
+                        //One of the sockets has been closed.
+                        System.out.println("Connection with socket 2 broken.");
                         connectionBrokenWithSocketTwo();
                         break;
                     }
 
-                    // Write to socket one.
+                    //Write to socket one.
                     try {
                         objectOutputStreamGameSocketOne.writeObject(chessFields);
-                        System.out.println("Sent output to socket 1");
+                        System.out.println("Sent output to socket 1.");
                     } catch (IOException e) {
-                        // One of the sockets has been closed.
-                        System.out.println("Connection with socket 1 broken");
+                        //One of the sockets has been closed.
+                        System.out.println("Connection with socket 1 broken.");
                         connectionBrokenWithSocketOne();
                         break;
                     }
@@ -68,26 +64,26 @@ public class Server {
 
             new Thread(() -> {
                 while (true) {
-                    ArrayList<ChessField> chessFields;
+                    List<ChessField> chessFields;
 
-                    // Read from socket 1.
+                    //Read from socket 1.
                     try {
-                        chessFields = (ArrayList<ChessField>) objectInputStream1.readObject();
-                        System.out.println("Read input from socket 1");
+                        chessFields = (List<ChessField>) objectInputStream1.readObject();
+                        System.out.println("Read input from socket 1.");
                     } catch (ClassNotFoundException | IOException classNotFoundException) {
-                        // One of the sockets has been closed
-                        System.out.println("Connection with socket 1 broken");
+                        //One of the sockets has been closed.
+                        System.out.println("Connection with socket 1 broken.");
                         connectionBrokenWithSocketOne();
                         break;
                     }
 
-                    // Write to socket 2.
+                    //Write to socket 2.
                     try {
                         objectOutputStreamGameSocketTwo.writeObject(chessFields);
-                        System.out.println("Sent output to socket 2");
+                        System.out.println("Sent output to socket 2.");
                     } catch (IOException e) {
-                        // One of the sockets has been closed.
-                        System.out.println("Connection with socket 2 broken");
+                        //One of the sockets has been closed.
+                        System.out.println("Connection with socket 2 broken.");
                         connectionBrokenWithSocketTwo();
                         break;
                     }
@@ -120,35 +116,39 @@ public class Server {
                     outputStream.writeUTF(inputStream.readUTF());
                     System.out.println("Sent UTF from socket A to socket B.");
                 } catch (IOException classNotFoundException) {
-                    // socket lost connection so stop trying to relay text
-                    System.out.println("Chat connection broken");
+                    //Socket lost connection so stop trying to relay text.
+                    System.out.println("Chat connection broken.");
                     break;
                 }
             }
         });
     }
 
-    public static synchronized void connectionBrokenWithSocketOne() {
-        // Socket one lost connection, so make socket two win.
+    /**
+     * Is called when socket one loses connection, and makes socket two win.
+     */
+    private static synchronized void connectionBrokenWithSocketOne() {
         try {
-            System.out.println("Trying to make socket 1 win");
+            System.out.println("Trying to make socket 1 win.");
             objectOutputStreamGameSocketTwo.writeObject(new ArrayList<ChessField>());
             objectOutputStreamGameSocketTwo.flush();
-            System.out.println("Succesfully sent message to socket two to win");
+            System.out.println("Successfully sent message to socket two to win.");
         } catch (IOException e) {
-            System.out.println("Failed in sending message to socket two to win");
+            System.out.println("Failed in sending message to socket two to win.");
         }
     }
 
-    public static synchronized void connectionBrokenWithSocketTwo() {
-        // Socket two lost connection, so make socket one win.
+    /**
+     * Is called when socket two loses connection, and makes socket one win.
+     */
+    private static synchronized void connectionBrokenWithSocketTwo() {
         try {
-            System.out.println("Trying to make socket 2 win");
+            System.out.println("Trying to make socket 2 win.");
             objectOutputStreamGameSocketOne.writeObject(new ArrayList<ChessField>());
             objectOutputStreamGameSocketOne.flush();
-            System.out.println("Succesfully sent message to socket one to win");
+            System.out.println("Successfully sent message to socket one to win.");
         } catch (IOException e) {
-            System.out.println("Failed in sending message to socket one to win");
+            System.out.println("Failed in sending message to socket one to win.");
         }
     }
 }

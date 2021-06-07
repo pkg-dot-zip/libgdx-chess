@@ -12,6 +12,7 @@ import static com.zimonishim.chess.util.FilePathHandler.blackBishop;
 import static com.zimonishim.chess.util.FilePathHandler.whiteBishop;
 
 public class Bishop extends ChessPiece {
+
     public Bishop(ChessField chessField, IChessBoardCallback chessBoardCallback, Players player) {
         super(chessField, chessBoardCallback, player);
     }

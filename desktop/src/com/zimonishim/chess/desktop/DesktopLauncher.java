@@ -8,8 +8,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
-//		config.addIcon(); //TODO: Add an icon.
-		config.title = "Chess";
+		config.title = "Chess";				//Sets the text in the bar of the Application to "Chess".
 		config.pauseWhenMinimized = false; //Keeps running the game despite not being shown on the screen.
 
 		new LwjglApplication(new GameHandler(), config);

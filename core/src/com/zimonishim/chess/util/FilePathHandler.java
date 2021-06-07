@@ -7,7 +7,7 @@ public class FilePathHandler {
 
     //Textures. //NOTE: These should all be defined the initTextures() method in TextureHandler. That class handles both creation & disposal.
     private static final String texturesPath = "textures";
-    public static final String chessPieceTexturesPath = texturesPath + "/chessPieces";
+    private static final String chessPieceTexturesPath = texturesPath + "/chessPieces";
         //ChessPieces.
     private static final String whiteChessPiece = chessPieceTexturesPath + "/white_";
     private static final String blackChessPiece = chessPieceTexturesPath + "/black_";

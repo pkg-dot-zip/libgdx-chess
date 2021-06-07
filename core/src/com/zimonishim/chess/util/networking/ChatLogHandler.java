@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Contains methods related to saving the ChatLog and/or processing messages and applying the proper formatting.
+ */
 public class ChatLogHandler {
 
     public static List<String> chatMessages = new ArrayList<>();
@@ -26,7 +29,11 @@ public class ChatLogHandler {
         );
     }
 
-    public static void printChatLog() { //Is called on the exit of the game. Will always be created.
+    /**
+     * Creates a chatLog file in the user's documents folder and writes all the messages to it.
+     * This will always be called upon closing the application window of the MainGame.
+     */
+    public static void printChatLog() {
         String folderToPutFile = FileSystemView.getFileSystemView().getDefaultDirectory().getAbsolutePath() + "/"; //Will point towards the user's desktop directory.
         String logFileName = folderToPutFile + "ChatLog-" + LocalDateTime.now().getYear() + "-" + LocalDateTime.now().getMonth() + "-" + LocalDateTime.now().getDayOfMonth() + ".txt";
 
@@ -44,9 +51,12 @@ public class ChatLogHandler {
         } catch (IOException e){
             e.printStackTrace();
         }
-        System.out.println("Printed chat log");
+        System.out.println("Printed chatLog.");
     }
 
+    /**
+     * Sends test messages used for debugging. These will be also printed in the ChatLog found in the user's documents folder.
+     */
     public static void debugChatTest(){
         ChatLogHandler.sendMessage(Players.WHITE, "Hello fooMan!");
         ChatLogHandler.sendMessage(Players.BLACK, "Hello other fooMan, I am a human!");

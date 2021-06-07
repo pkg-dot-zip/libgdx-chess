@@ -12,10 +12,10 @@ import java.util.Set;
 
 public abstract class ChessPiece implements Serializable {
 
-    protected String texture;
+    private String texture;
     protected Players player;
     protected List<ChessField> chessFields;
-    protected ChessField chessField;
+    ChessField chessField;
 
     public ChessPiece(ChessField chessField, IChessBoardCallback chessBoardCallback, Players player) {
         this.chessField = chessField;

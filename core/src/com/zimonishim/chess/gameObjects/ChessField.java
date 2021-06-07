@@ -48,16 +48,7 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
     }
 
     @Override
-    public void update() {
-        // This should not be called on. Chessfield should use the other update method instead.
-        System.out.println("Wrong update call in chessfield");
-    }
-
-    @Override
     public void update(IChessBoardCallback chessBoardCallback) {
-        //TODO: Once our software is done, and we notice we don't need to call this as often we NEED to optimize this by not doing so.
-        //The reason we can consider this is because we only update variables when pressing the mouse,
-        // so this could be once then and ONLY if then.
         color = originalColor;
 
         if (isSelected) {
@@ -122,7 +113,7 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
     }
 
     private void sendNetworkData(IChessBoardCallback chessBoardCallback, IClientCallback clientCallback) {
-        // Before sending data reset all selections and colours.
+        //Before sending data reset all selections and colours.
         chessBoardCallback.cleanBoard();
         clientCallback.getClient().sendChessFields(chessBoardCallback);
     }
@@ -211,6 +202,8 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
 
     private void writeObject(ObjectOutputStream s) throws IOException {
         s.defaultWriteObject();
+
+        //Since Color isn't Serializable we write the RGBA values of the colors.
         s.writeFloat(this.color.r);
         s.writeFloat(this.color.g);
         s.writeFloat(this.color.b);
@@ -223,6 +216,8 @@ public class ChessField extends Rectangle implements IGameObject, Serializable {
 
     private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
         s.defaultReadObject();
+
+        //Since Color isn't Serializable we read the RGBA values of the colors here.
         this.color = new Color(s.readFloat(), s.readFloat(), s.readFloat(), s.readFloat());
         this.originalColor = new Color(s.readFloat(), s.readFloat(), s.readFloat(), s.readFloat());
     }

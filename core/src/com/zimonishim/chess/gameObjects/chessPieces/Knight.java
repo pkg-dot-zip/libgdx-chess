@@ -11,6 +11,7 @@ import static com.zimonishim.chess.util.FilePathHandler.blackKnight;
 import static com.zimonishim.chess.util.FilePathHandler.whiteKnight;
 
 public class Knight extends ChessPiece {
+
     public Knight(ChessField chessField, IChessBoardCallback chessBoardCallback, Players player) {
         super(chessField, chessBoardCallback, player);
     }

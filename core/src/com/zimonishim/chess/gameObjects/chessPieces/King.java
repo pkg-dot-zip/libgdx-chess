@@ -7,10 +7,11 @@ import com.zimonishim.chess.gameObjects.ChessField;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.zimonishim.chess.util.FilePathHandler.*;
-import static com.zimonishim.chess.util.FilePathHandler.blackBishop;
+import static com.zimonishim.chess.util.FilePathHandler.blackKing;
+import static com.zimonishim.chess.util.FilePathHandler.whiteKing;
 
 public class King extends ChessPiece {
+
     public King(ChessField chessField, IChessBoardCallback chessBoardCallback, Players player) {
         super(chessField, chessBoardCallback, player);
     }

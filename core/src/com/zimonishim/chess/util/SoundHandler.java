@@ -22,6 +22,7 @@ public class SoundHandler {
         sounds.get(filePath).play();
     }
 
+    /** Called when this application should release all resources. */
     public static void dispose(){
         for (Sound sound : sounds.values()){
             sound.dispose();
