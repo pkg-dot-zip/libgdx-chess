@@ -1,16 +1,16 @@
 <p align="center">
-  <a href="https://github.com/ZimonIsHim/libgdx-chess" rel="noopener">
- <img width=200px height=200px src="https://i.imgur.com/1CWWMG5.png" alt="Project logo"></a>
+  <a href="https://github.com/pkg-dot-zip/libgdx-chess" rel="noopener">
+ <img width=200px height=200px src="" alt="Project logo"></a>
 </p>
 
 <h3 align="center">LibGDX-Chess</h3>
 
 <div align="center">
 
-  [![Stars](https://img.shields.io/github/stars/ZimonIsHim/libgdx-chess)](https://github.com/ZimonIsHim/libgdx-chess/stargazers)
-  [![Downloads](https://img.shields.io/github/downloads/ZimonIsHim/libgdx-chess/total)](https://github.com/ZimonIsHim/libgdx-chess/releases)
-  [![Last Commit](https://img.shields.io/github/last-commit/ZimonIsHim/libgdx-chess)](https://github.com/ZimonIsHim/libgdx-chess/commits/development)
-  [![License](https://img.shields.io/github/license/ZimonIsHim/libgdx-chess)](/LICENSE)
+  [![Stars](https://img.shields.io/github/stars/pkg-dot-zip/libgdx-chess)](https://github.com/pkg-dot-zip/libgdx-chess/stargazers)
+  [![Downloads](https://img.shields.io/github/downloads/pkg-dot-zip/libgdx-chess/total)](https://github.com/pkg-dot-zip/libgdx-chess/releases)
+  [![Last Commit](https://img.shields.io/github/last-commit/pkg-dot-zip/libgdx-chess)](https://github.com/pkg-dot-zip/libgdx-chess/commits/development)
+  [![License](https://img.shields.io/github/license/pkg-dot-zip/libgdx-chess)](/LICENSE)
 
 </div>
 
@@ -53,5 +53,5 @@ Instructions on how to get this project running on your machine:
 - [ShapeDrawer](https://github.com/earlygrey/shapedrawer) - Library for LibGDX
 
 ## ✍️ Authors <a name = "authors"></a>
-- [@ZimonIsHim](https://github.com/ZimonIsHim) - Idea, Initial work, general development & management
+- [@OnsPetruske](https://github.com/pkg-dot-zip) - Idea, Initial work, general development & management
 - [@medkam](https://github.com/medkam) - General development
