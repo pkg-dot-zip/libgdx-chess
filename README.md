@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/pkg-dot-zip/libgdx-chess" rel="noopener">
- <img width=200px height=200px src="" alt="Project logo"></a>
+ <img width=400px height=400px src="https://raw.githubusercontent.com/pkg-dot-zip/libgdx-chess/development/chessLogo.png" alt="Project logo"></a>
 </p>
 
 <h3 align="center">LibGDX-Chess</h3>
